@@ -14,16 +14,14 @@ parser code {:
 
     int fila,columna;
     String lexema;
+    SitioWeb sitioWeb;
+    PaginaWeb paginaWeb;
+    Componente componente;
     //  VARIABLES
-    ArrayList<Token> listaDeTokens;
-    ArrayList<String> listaDeEtiquetas;
-    ArrayList<Token> listaDeAtributos;
     // Connect this parser to a scanner!
     public parser(AnalizadorLexicoPaginas lex) {
 	super(lex);
-        listaDeTokens=new ArrayList<>();
-        listaDeEtiquetas= new ArrayList<>();
-        listaDeAtributos = new ArrayList<>();
+        
     }
 
     //Metodo al que se llama automaticamente ante algun error sintactico
@@ -67,25 +65,192 @@ parser code {:
 
 /*--------------- 2da Area: Declaraciones -----------------------*/
 
-terminal String         ELEMENTO,NOMBRE,PARAMETROS,PARAMETRO,ETIQUETA,VALOR,SITIO_WEB,
-                        ID,PAGINA_WEB,TITULO,TITULO_PARAMETRO,PARRAFO,IMAGEN,VIDEO,MENU,SITIO,PADRE,
-                        ETIQUETAS_DE_PAGINA,COMPONENTE,PAGINA,CLASE,TEXTO,ALINEACION,
-                        ORIGEN,ALTURA,ANCHO,ETIQUETAS,CENTRAR,IZQUIERDA,DERECHA,
-                        JUSTIFICAR,COLOR,DIAGONAL,MENOR_QUE,MAYOR_QUE,IDENTIFICADOR,
-                        NUMERO,CONJUNTO_DE_ETIQUETAS,URL,ORACION,
-                        USUARIO_CREACION,FECHA_CREACION,FECHA_MODIFICACION,USUARIO_MODIFICACION,
-                        FORMATO_FECHA,IGUAL,COMILLA,ATRIBUTOS,ATRIBUTO,PARAM_ETIQUETAS;
+       
+terminal String     MENOR_QUE,SITIO_WEB,MAYOR_QUE,DIAGONAL,PARAMETROS_SITIO_WEB,PARAMETRO_SITIO_WEB,
+                    NOMBRE,IGUAL,COMILLA,ID,ORACION,PAGINAS_SITIO_WEB,PAGINA,
+                    PARAMETROS_DE_PAGINA,COMPONENTES,ETIQUETAS,
+                    PARAMETRO_DE_PAGINA,COMPONENTE,ATRIBUTO,ATRIBUTOS,ETIQUETA;
 
-non terminal Object     conjuntoDeElementos,elemento,inicioSitioWeb,inicioPaginaWeb,
-                        inicioEtiquetas,inicioComponente,parametros,atributos,
-                        fin,conjuntoDeParametros,unParametro,tipoDeClase,etiquetas,
-                        conjuntoDeEtiquetas,unaEtiqueta,conjuntoDeAtributos,unAtributo,
-                        tipoDeAlineacion,etiquetasMenu;
+terminal String      DIRECCION,USUARIO_CREACION,FECHA_CREACION,FECHA_MODIFICACION,USUARIO_MODIFICACION,
+                     TITULO,SITIO,PADRE;
+
+
+terminal String     TEXTO,ALINEACION,COLOR,ORIGEN,ALTURA,ANCHO,ETIQUETAS_MENU;
+
+terminal String     PARRAFO,IMAGEN,VIDEO,MENU;
+
+non terminal Object    conjuntoDeSitiosWeb,unSitioWeb,inicioSitioWeb,parametrosSitioWeb,paginasSitioWeb,
+                       finSitioWeb,conjuntoDeParametrosDeSitioWeb,unParametroDeSitioWeb,conjuntoDePaginas,
+                       unaPagina,parametrosPagina,etiquetas,componentes,
+                       conjuntoDeParametrosDePagina,unParametroDePagina,
+                       conjuntoDeComponentes,unComponente,
+                       conjuntoDeAtributos,atributosDeComponente,unAtributo,
+                       conjuntoDeEtiquetas,unaEtiqueta;
                         
        
 /*--------------- 3ra Area: Reglas Semanticas -----------------------*/
 
 
+
+//------------------------------Inicio-------------------------------
+
+start with conjuntoDeSitiosWeb;
+
+conjuntoDeSitiosWeb::= conjuntoDeSitiosWeb unSitioWeb | unSitioWeb;
+
+unSitioWeb::= inicioSitioWeb parametrosSitioWeb paginasSitioWeb finSitioWeb;
+
+inicioSitioWeb::= MENOR_QUE SITIO_WEB MAYOR_QUE;
+
+finSitioWeb::= MENOR_QUE DIAGONAL SITIO_WEB MAYOR_QUE;
+
+
+//----------------------------------Parametros SITIO_WEB-----------------------------
+
+parametrosSitioWeb::= MENOR_QUE PARAMETROS_SITIO_WEB MAYOR_QUE conjuntoDeParametrosDeSitioWeb MENOR_QUE DIAGONAL PARAMETROS_SITIO_WEB MAYOR_QUE; 
+
+conjuntoDeParametrosDeSitioWeb::= conjuntoDeParametrosDeSitioWeb unParametroDeSitioWeb | unParametroDeSitioWeb; 
+
+unParametroDeSitioWeb::= MENOR_QUE PARAMETRO_SITIO_WEB NOMBRE IGUAL COMILLA ID:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_SITIO_WEB MAYOR_QUE
+                         {:sitioWeb = new SitioWeb();sitioWeb.setId(t);:}|
+                         MENOR_QUE PARAMETRO_SITIO_WEB NOMBRE IGUAL COMILLA USUARIO_CREACION:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_SITIO_WEB MAYOR_QUE
+                         {:sitioWeb.setUsuarioCreacion(t);:}|
+                         MENOR_QUE PARAMETRO_SITIO_WEB NOMBRE IGUAL COMILLA FECHA_CREACION:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_SITIO_WEB MAYOR_QUE
+                         {:sitioWeb.setFechaCreacion(t);:}|
+                         MENOR_QUE PARAMETRO_SITIO_WEB NOMBRE IGUAL COMILLA FECHA_MODIFICACION:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_SITIO_WEB MAYOR_QUE
+                         {:sitioWeb.setFechaModificacion(t);:}|
+                         MENOR_QUE PARAMETRO_SITIO_WEB NOMBRE IGUAL COMILLA USUARIO_MODIFICACION:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_SITIO_WEB MAYOR_QUE
+                         {:sitioWeb.setUsuarioModificacion(t);
+                           Run.listaDeSitiosWeb.add(sitioWeb);
+                         :};
+
+
+//--------------------------------PAGINAS SITIO WEB-----------------------------------
+
+paginasSitioWeb::= MENOR_QUE PAGINAS_SITIO_WEB MAYOR_QUE conjuntoDePaginas MENOR_QUE DIAGONAL PAGINAS_SITIO_WEB MAYOR_QUE;
+
+conjuntoDePaginas ::= conjuntoDePaginas unaPagina | unaPagina;
+
+
+unaPagina::= MENOR_QUE PAGINA MAYOR_QUE parametrosPagina  MENOR_QUE DIAGONAL PAGINA MAYOR_QUE|
+             MENOR_QUE PAGINA MAYOR_QUE parametrosPagina componentes  MENOR_QUE DIAGONAL PAGINA MAYOR_QUE|
+             MENOR_QUE PAGINA MAYOR_QUE parametrosPagina etiquetas  MENOR_QUE DIAGONAL PAGINA MAYOR_QUE|
+             MENOR_QUE PAGINA MAYOR_QUE parametrosPagina componentes etiquetas  MENOR_QUE DIAGONAL PAGINA MAYOR_QUE;
+
+
+
+//-------------------------------PARAMETROS PAGINAS WEB-------------------------------------------------------
+
+parametrosPagina::=MENOR_QUE PARAMETROS_DE_PAGINA MAYOR_QUE conjuntoDeParametrosDePagina MENOR_QUE DIAGONAL PARAMETROS_DE_PAGINA MAYOR_QUE; 
+
+conjuntoDeParametrosDePagina::= conjuntoDeParametrosDePagina unParametroDePagina | unParametroDePagina;
+
+unParametroDePagina::=   MENOR_QUE PARAMETRO_DE_PAGINA NOMBRE IGUAL COMILLA ID COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_DE_PAGINA MAYOR_QUE
+                         {:paginaWeb = new PaginaWeb();paginaWeb.setId(t);:}|
+                         MENOR_QUE PARAMETRO_DE_PAGINA NOMBRE IGUAL COMILLA DIRECCION COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_DE_PAGINA MAYOR_QUE
+                         {:paginaWeb.setDireccion(t);:}|
+                         MENOR_QUE PARAMETRO_DE_PAGINA NOMBRE IGUAL COMILLA TITULO COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_DE_PAGINA MAYOR_QUE
+                         {:paginaWeb.setTitulo(t);:}|
+                         MENOR_QUE PARAMETRO_DE_PAGINA NOMBRE IGUAL COMILLA SITIO COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_DE_PAGINA MAYOR_QUE
+                         {:paginaWeb.setSitio(t);:}|
+                         MENOR_QUE PARAMETRO_DE_PAGINA NOMBRE IGUAL COMILLA PADRE COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_DE_PAGINA MAYOR_QUE
+                         {:paginaWeb.setPadre(t);:}|
+                         MENOR_QUE PARAMETRO_DE_PAGINA NOMBRE IGUAL COMILLA USUARIO_CREACION COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_DE_PAGINA MAYOR_QUE
+                         {:paginaWeb.setUsuarioCreacion(t);:}|
+                         MENOR_QUE PARAMETRO_DE_PAGINA NOMBRE IGUAL COMILLA FECHA_CREACION COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_DE_PAGINA MAYOR_QUE
+                         {:paginaWeb.setFechaDeCreacion(t);:}|
+                         MENOR_QUE PARAMETRO_DE_PAGINA NOMBRE IGUAL COMILLA FECHA_MODIFICACION COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_DE_PAGINA MAYOR_QUE
+                         {:paginaWeb.setFechaModificacion(t);:}|
+                         MENOR_QUE PARAMETRO_DE_PAGINA NOMBRE IGUAL COMILLA USUARIO_MODIFICACION COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO_DE_PAGINA MAYOR_QUE
+                         {:paginaWeb.setUsuarioModificacion(t);
+                         Run.listaDePaginasWeb.add(paginaWeb);
+                         :};
+//-------------------------------COMPONENTES PAGINAS WEB----------------------------------------------------
+
+componentes::=MENOR_QUE COMPONENTES MAYOR_QUE conjuntoDeComponentes MENOR_QUE DIAGONAL COMPONENTES MAYOR_QUE; 
+
+conjuntoDeComponentes::= conjuntoDeComponentes unComponente | unComponente;
+
+unComponente::= MENOR_QUE COMPONENTE NOMBRE IGUAL COMILLA TITULO COMILLA MAYOR_QUE conjuntoDeAtributos MENOR_QUE DIAGONAL COMPONENTE MAYOR_QUE
+                {:componente.setClase("[TITULO]");:}|
+                MENOR_QUE COMPONENTE NOMBRE IGUAL COMILLA PARRAFO COMILLA MAYOR_QUE conjuntoDeAtributos MENOR_QUE DIAGONAL COMPONENTE MAYOR_QUE
+                {:componente.setClase("[PARRAFO]");:}|
+                MENOR_QUE COMPONENTE NOMBRE IGUAL COMILLA IMAGEN COMILLA MAYOR_QUE conjuntoDeAtributos MENOR_QUE DIAGONAL COMPONENTE MAYOR_QUE
+                {:componente.setClase("[IMAGEN]");:}|
+                MENOR_QUE COMPONENTE NOMBRE IGUAL COMILLA VIDEO COMILLA MAYOR_QUE conjuntoDeAtributos MENOR_QUE DIAGONAL COMPONENTE MAYOR_QUE
+                {:componente.setClase("[VIDEO]");:}|
+                MENOR_QUE COMPONENTE NOMBRE IGUAL COMILLA MENU COMILLA MAYOR_QUE conjuntoDeAtributos MENOR_QUE DIAGONAL COMPONENTE MAYOR_QUE
+                {:componente.setClase("[MENU]");:};
+
+
+conjuntoDeAtributos::= MENOR_QUE ATRIBUTOS  MAYOR_QUE atributosDeComponente MENOR_QUE DIAGONAL ATRIBUTOS MAYOR_QUE;
+
+atributosDeComponente::= atributosDeComponente unAtributo | unAtributo;
+
+unAtributo::= MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA TEXTO:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:if(componente==null) componente=new Componente();componente.setTexto(t);:}|
+              MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA ID:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:if(componente==null) componente=new Componente();componente.setId(t);:}|
+              MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA ALINEACION:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:if(componente==null) componente=new Componente();componente.setAlineacion(t);:}|
+              MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA COLOR:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:if(componente==null) componente=new Componente();componente.setColor(t);:}|
+              MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA ORIGEN:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:if(componente==null) componente=new Componente();componente.setOrigen(t);:}|
+              MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA ALTURA:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:if(componente==null) componente=new Componente();componente.setAltura(t);:}|
+              MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA ANCHO:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:if(componente==null) componente=new Componente();componente.setAncho(t);:}|
+              MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA PADRE:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:if(componente==null) componente=new Componente();componente.setPadre(t);:}|
+              MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA ETIQUETAS_MENU:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:if(componente==null) componente=new Componente();componente.setEtiquetas(t);
+                paginaWeb.getListaDeComponentes().add(componente);  
+              :};
+
+
+//----------------------------------ETIQUETAS PAGINAS WEB-----------------------------------------------------
+
+etiquetas::=MENOR_QUE ETIQUETAS MAYOR_QUE conjuntoDeEtiquetas MENOR_QUE DIAGONAL ETIQUETAS MAYOR_QUE;
+
+conjuntoDeEtiquetas::= conjuntoDeEtiquetas unaEtiqueta | unaEtiqueta;
+
+unaEtiqueta::= MENOR_QUE ETIQUETA NOMBRE IGUAL ORACION:t DIAGONAL MAYOR_QUE
+                {:
+                  Etiqueta etiqueta = new Etiqueta(t);
+                  paginaWeb.getListaDeEtiquetas().add(etiqueta);
+                :};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 start with conjuntoDeElementos;
 
 conjuntoDeElementos::=conjuntoDeElementos elemento | elemento;
@@ -147,6 +312,9 @@ conjuntoDeParametros::= conjuntoDeParametros unParametro | unParametro;
 unParametro::= MENOR_QUE PARAMETRO NOMBRE IGUAL  COMILLA ID:i  COMILLA MAYOR_QUE  IDENTIFICADOR:t  MENOR_QUE DIAGONAL PARAMETRO MAYOR_QUE
                {:listaDeTokens.add(new Token(i,t));:}|
                
+               MENOR_QUE PARAMETRO NOMBRE IGUAL  COMILLA DIRECCION:i  COMILLA MAYOR_QUE  ORACION:t  MENOR_QUE DIAGONAL PARAMETRO MAYOR_QUE
+               {:listaDeTokens.add(new Token(i,t));:}|
+
                MENOR_QUE PARAMETRO NOMBRE IGUAL  COMILLA USUARIO_CREACION:i  COMILLA MAYOR_QUE  IDENTIFICADOR:t  MENOR_QUE DIAGONAL PARAMETRO MAYOR_QUE
                {:listaDeTokens.add(new Token(i,t));:}|
                
@@ -240,3 +408,4 @@ tipoDeAlineacion::=CENTRAR:t {:RESULT =t;:}|
 
 etiquetasMenu::= IDENTIFICADOR:e {:RESULT=e;:}|CONJUNTO_DE_ETIQUETAS:e {:RESULT=e;:};
             
+*/

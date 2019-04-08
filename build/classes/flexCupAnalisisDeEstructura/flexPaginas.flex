@@ -16,9 +16,6 @@ import static recuperacionPaginas.sym.*;
 
 Salto = \r|\n|\r\n
 Espacio = {Salto} | [ \t\f]
-Digitos = 0|[1-9][0-9]*
-FormatoFecha=[0-9][0-9][0-9][0-9]["-"][0-9][0-9]["-"][0-9][0-9]
-Id =( [_] | [-] | [$] )([:jletterdigit:] | [-] | [_] | [$] )+
 
 
 %{
@@ -36,49 +33,74 @@ Id =( [_] | [-] | [$] )([:jletterdigit:] | [-] | [_] | [$] )+
 %% //------------------>3er area<--------------------------    
   <YYINITIAL>  {
 
-    "elemento" {return symbol(ELEMENTO,yytext());}
+//********************************************************Simbolos************************************
+    "\""    {return symbol(COMILLA,yytext());}
 
-    "nombre"	{return symbol(NOMBRE,yytext());}				
-	
-    "parametros" {return symbol(PARAMETROS,yytext());}
+    "/"    {return symbol(DIAGONAL,yytext());}
 
-    "parametro" {return symbol(PARAMETRO,yytext());}
+   "<"    {return symbol(MENOR_QUE,yytext());}
 
-    "etiqueta" {return symbol(ETIQUETA,yytext());}
+   ">"    {return symbol(MAYOR_QUE,yytext());}
 
-    "valor" {return symbol(VALOR,yytext());}
+   "="    {return symbol(IGUAL,yytext());}
 
-    "etiquetas" {return symbol(PARAM_ETIQUETAS,yytext());}
+//******************************************************SitiWeb**********************************************
 
-    "SITIO_WEB" {return symbol(SITIO_WEB,yytext());}
+    "sitioWeb" {return symbol(SITIO_WEB,yytext());}
 
-    "ID" {return symbol(ID,yytext());}
+    "parametrosSitioWeb" {return symbol(PARAMETROS_SITIO_WEB,yytext());}
 
-    "PAGINA_WEB" {return symbol(PAGINA_WEB,yytext());}
+    "parametroSitioWeb" {return symbol(PARAMETRO_SITIO_WEB,yytext());}
+
+    "nombre"	{return symbol(NOMBRE,yytext());}
+
+    "paginasSitioWeb" {return symbol(PAGINAS_SITIO_WEB,yytext());}	
+
+
+//********************************************************PaginaWeb*****************************************************
+    "pagina" {return symbol(PAGINA,yytext());}		
+     
+    "parametrosDePagina" {return symbol(PARAMETROS_DE_PAGINA,yytext());}
+
+    "parametroDePagina"  {return symbol(PARAMETRO_DE_PAGINA,yytext());}
+
+    "componentes" {return symbol(COMPONENTES,yytext());}
+
+    "etiquetas" {return symbol(ETIQUETAS,yytext());}
+
+//******************************************************Componentes*****************************************
+
+    "componente"  {return symbol(COMPONENTE,yytext());}
+
+    "atributos"  {return symbol(ATRIBUTOS,yytext());}
     
-    "TITULO" {return symbol(TITULO_PARAMETRO,yytext());}
+    "atributo"  {return symbol(ATRIBUTO,yytext());}
 
-    "[TITULO]" {return symbol(TITULO,yytext());}
+    
 
-    "[PARRAFO]" {return symbol(PARRAFO,yytext());}
+ 
+//*************************************************************************PARAMETROS***************************************
+	
+    "ID" {return symbol(ID,yytext());}	
 
-    "[IMAGEN]" {return symbol(IMAGEN,yytext());}
+    "DIRECCION" {return symbol(DIRECCION,yytext());}
 
-    "[VIDEO]" {return symbol(VIDEO,yytext());}
+    "USUARIO_CREACION"  {return symbol(USUARIO_CREACION,yytext());}
 
-    "[MENU]" {return symbol(MENU,yytext());}
+    "FECHA_CREACION"    {return symbol(FECHA_CREACION,yytext());}
 
-    "SITIO" {return symbol(SITIO,yytext());}
+    "FECHA_MODIFICACION"    {return symbol(FECHA_MODIFICACION,yytext());}
 
-    "PADRE" {return symbol(PADRE,yytext());}
+    "USUARIO_MODIFICACION"  {return symbol(USUARIO_MODIFICACION,yytext());}
 
-    "ETIQUETAS_DE_PAGINA" {return symbol(ETIQUETAS_DE_PAGINA,yytext());}
+    "TITULO" {return symbol(TITULO,yytext());}		
 
-    "COMPONENTE" {return symbol(COMPONENTE,yytext());}
+    "SITIO" {return symbol(SITIO,yytext());}		
 
-    "PAGINA" {return symbol(PAGINA,yytext());}
+    "PADRE" {return symbol(PADRE,yytext());}		
 
-    "CLASE" {return symbol(CLASE,yytext());}
+
+//************************************************************************ATRIBUTOS*******************************************
 
     "TEXTO" {return symbol(TEXTO,yytext());}
 
@@ -92,49 +114,89 @@ Id =( [_] | [-] | [$] )([:jletterdigit:] | [-] | [_] | [$] )+
     
     "ANCHO" {return symbol(ANCHO,yytext());}
 
-    "ETIQUETAS" {return symbol(ETIQUETAS,yytext());}
+//*************************************************************************TIPOS DE COMPONENTES*******************************
+    "PARRAFO" {return symbol(PARRAFO,yytext());}
+    
+    "IMAGEN" {return symbol(IMAGEN,yytext());}
+    
+    "VIDEO" {return symbol(VIDEO,yytext());}
+    
+    "MENU" {return symbol(MENU,yytext());}
+    
+    "ETIQUETAS" {return symbol(ETIQUETAS_MENU,yytext());}
 
-    "CENTRAR" {return symbol(CENTRAR,yytext());}
 
-    "IZQUIERDA" {return symbol(IZQUIERDA,yytext());}
+//**************************************************************************Etiquetas*******************************************
+    
+    "etiqueta" {return symbol(ETIQUETA,yytext());}
 
-    "DERECHA" {return symbol(DERECHA,yytext());}
 
-    "JUSTIFICAR" {return symbol(JUSTIFICAR,yytext());}
 
-    "USUARIO_CREACION"  {return symbol(USUARIO_CREACION,yytext());}
 
-     "FECHA_CREACION"    {return symbol(FECHA_CREACION,yytext());}
 
-     "FECHA_MODIFICACION"    {return symbol(FECHA_MODIFICACION,yytext());}
 
-     "USUARIO_MODIFICACION"  {return symbol(USUARIO_MODIFICACION,yytext());}
 
-      "atributo"  {return symbol(ATRIBUTO,yytext());}
 
-      "atributos"  {return symbol(ATRIBUTOS,yytext());}
 
-    "\""    {return symbol(COMILLA,yytext());}
 
-    "/"    {return symbol(DIAGONAL,yytext());}
 
-   "<"    {return symbol(MENOR_QUE,yytext());}
 
-   ">"    {return symbol(MAYOR_QUE,yytext());}
 
-   "="    {return symbol(IGUAL,yytext());}
+ //   "etiqueta" {return symbol(ETIQUETA,yytext());}
 
-    "["{Id}"]"   {System.out.println("Id"+yytext());return symbol(IDENTIFICADOR,yytext());}
+//    "valor" {return symbol(VALOR,yytext());}
+    
+ //   "TITULO" {return symbol(TITULO_PARAMETRO,yytext());}
+/*
+    "[TITULO]" {return symbol(TITULO,yytext());}
+
+    "[PARRAFO]" {return symbol(PARRAFO,yytext());}
+
+    "[IMAGEN]" {return symbol(IMAGEN,yytext());}
+
+    "[VIDEO]" {return symbol(VIDEO,yytext());}
+
+    "[MENU]" {return symbol(MENU,yytext());}
+*/
+ //   "SITIO" {return symbol(SITIO,yytext());}
+
+   // "PADRE" {return symbol(PADRE,yytext());}
+
+//    "ETIQUETAS_DE_PAGINA" {return symbol(ETIQUETAS_DE_PAGINA,yytext());}
+
+//    "COMPONENTE" {return symbol(COMPONENTE,yytext());}
+
+//    "CLASE" {return symbol(CLASE,yytext());}
+
+  //  "ETIQUETAS" {return symbol(ETIQUETAS,yytext());}
+
+//    "CENTRAR" {return symbol(CENTRAR,yytext());}
+
+//    "IZQUIERDA" {return symbol(IZQUIERDA,yytext());}
+
+//    "DERECHA" {return symbol(DERECHA,yytext());}
+
+//    "JUSTIFICAR" {return symbol(JUSTIFICAR,yytext());}
+
+
+//    "DIRECCION" {return symbol(DIRECCION,yytext());}
+
+//      "atributo"  {return symbol(ATRIBUTO,yytext());}
+
+//      "atributos"  {return symbol(ATRIBUTOS,yytext());}
+
+
+//    "["{Id}"]"   {System.out.println("Id"+yytext());return symbol(IDENTIFICADOR,yytext());}
 
 //    "[#"([a-fA-F]|[0-9]){6}"]" {System.out.println("CODIGO_COLOR:"+yytext());}
 
-    "["{FormatoFecha}"]"  {return symbol(FORMATO_FECHA,yytext());}
+//    "["{FormatoFecha}"]"  {return symbol(FORMATO_FECHA,yytext());}
 
-    "["{Digitos}"]"     {return symbol(NUMERO,yytext());}
+//    "["{Digitos}"]"     {return symbol(NUMERO,yytext());}
 
-    "["(({Id}"|")+) {Id}"]"  {System.out.println("ConjuntoDeEtiquetas:"+yytext());return symbol(CONJUNTO_DE_ETIQUETAS,yytext());}  
+//    "["(({Id}"|")+) {Id}"]"  {System.out.println("ConjuntoDeEtiquetas:"+yytext());return symbol(CONJUNTO_DE_ETIQUETAS,yytext());}  
 
-    "["https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*"]" {System.out.println("URL"+yytext());return symbol(URL,yytext());}
+//    "["https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*"]" {System.out.println("URL"+yytext());return symbol(URL,yytext());}
 
     "["~"]" {return symbol(ORACION,yytext());}
 

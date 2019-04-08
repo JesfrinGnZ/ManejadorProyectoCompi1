@@ -5,6 +5,8 @@
  */
 package Objetos;
 
+import ManejadoresDeTexto.EscritorDeDatos;
+import elementos.Run;
 import java.util.ArrayList;
 
 /**
@@ -18,16 +20,25 @@ public class SitioWeb {
     public SitioWeb() {
     }
 
-    public void darValoresCreacion(ArrayList<Token> listaDeTokens) {
 
+
+    public void darValoresCreacionyVerificacion(ArrayList<Token> listaDeTokens) {
+        int contador = 0;
         for (Token token : listaDeTokens) {
             String lexema = token.getLexema().substring(1, token.getLexema().length() - 1);
             switch (token.getTipo()) {
                 case "ID":
                     this.id = lexema;
+                    ManejadorDeMensajes.agregarMensaje("-------------SITIO WEB ID:" + this.id + "----------------");
+                    if (ManejadorDeVerificaciones.verificarSiExisteSitioWeb(this.id)) {
+                        contador++;
+                    }
                     break;
                 case "USUARIO_CREACION":
                     this.usuarioCreacion = lexema;
+                    if (!ManejadorDeVerificaciones.verificarSiExisteElUsuario(this.usuarioCreacion)) {
+                        contador++;
+                    }
                     break;
                 case "FECHA_CREACION":
                     this.fechaCreacion = lexema;
@@ -37,9 +48,31 @@ public class SitioWeb {
                     break;
                 case "USUARIO_MODIFICACION":
                     this.usuarioModificacion = lexema;
+                    if (!ManejadorDeVerificaciones.verificarSiExisteElUsuario(this.usuarioModificacion)) {
+                        contador++;
+                    }
                     break;
             }
         }
+        if (contador == 0) {
+            ManejadorDeMensajes.agregarMensaje("El sitio web con id:" + this.id + " se ha CREADO EXITOSAMENTE");
+            //Se agrega els itio web a la lista
+            Run.listaDeSitiosWeb.add(this);//Le mandamos el sitio web que estamos creando y analizando
+            //Se escribe el sitio web y index
+            PaginaWeb index1 = new PaginaWeb("index" + this.id, "/home/jesfrin/Documentos/DocumentosHtml/index" + this.id + ".html", "index" + this.id, this.id, this.id, this.usuarioCreacion, this.fechaCreacion, this.fechaModificacion, this.usuarioModificacion);
+            //Se agrega la pagina a la lista
+            Run.listaDePaginasWeb.add(index1);
+            //Crear el html de la pagina web
+            String html = index1.crearHtmlDePaginaWeb();
+            EscritorDeDatos.escribirHtml(html, "/home/jesfrin/Documentos/DocumentosHtml/index" + this.id + ".html");
+            //Se escribio la pagina html
+            EscritorDeDatos.agregarDatosABaseDeDatos(escribirSitioWeb(this, index1), "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
+
+        }
+    }
+
+    public static void crearPagina() {
+
     }
 
     public String getId() {
@@ -47,7 +80,7 @@ public class SitioWeb {
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.id = id.substring(1, id.length() - 1);
     }
 
     public String getUsuarioCreacion() {
@@ -55,7 +88,7 @@ public class SitioWeb {
     }
 
     public void setUsuarioCreacion(String usuarioCreacion) {
-        this.usuarioCreacion = usuarioCreacion;
+        this.usuarioCreacion = usuarioCreacion.substring(1, usuarioCreacion.length() - 1);
     }
 
     public String getFechaCreacion() {
@@ -63,7 +96,7 @@ public class SitioWeb {
     }
 
     public void setFechaCreacion(String fechaCreacion) {
-        this.fechaCreacion = fechaCreacion;
+        this.fechaCreacion = fechaCreacion.substring(1, fechaCreacion.length() - 1);
     }
 
     public String getFechaModificacion() {
@@ -71,7 +104,7 @@ public class SitioWeb {
     }
 
     public void setFechaModificacion(String fechaModificacion) {
-        this.fechaModificacion = fechaModificacion;
+        this.fechaModificacion = fechaModificacion.substring(1, fechaModificacion.length() - 1);
     }
 
     public String getUsuarioModificacion() {
@@ -79,7 +112,62 @@ public class SitioWeb {
     }
 
     public void setUsuarioModificacion(String usuarioModificacion) {
-        this.usuarioModificacion = usuarioModificacion;
+        this.usuarioModificacion = usuarioModificacion.substring(1, usuarioModificacion.length() - 1);
+    }
+
+    public static String escribirSitioWeb(SitioWeb sitioWeb, PaginaWeb paginaWeb) {
+        return "<sitioWeb>\n"
+                + "\t<parametrosSitioWeb>\n"
+                + "\t\t<parametroSitioWeb nombre = \"ID\">\n"
+                + "\t\t\t[" + sitioWeb.getId() + "]" + " \n"
+                + "\t\t</parametroSitioWeb>\n"
+                + "\t\t<parametroSitioWeb nombre = \"USUARIO_CREACION\">\n"
+                + "\t\t\t[" + sitioWeb.getUsuarioCreacion() + "]" + " \n"
+                + "\t\t</parametroSitioWeb>\n"
+                + "\t\t<parametroSitioWeb nombre = \"FECHA_CREACION\">\n"
+                + "\t\t\t[" + sitioWeb.getFechaCreacion() + "]" + " \n"
+                + "\t\t</parametroSitioWeb>\n"
+                + "\t\t<parametroSitioWeb nombre = \"FECHA_MODIFICACION\">\n"
+                + "\t\t\t[" + sitioWeb.getFechaModificacion() + "]" + " \n"
+                + "\t\t</parametroSitioWeb>\n"
+                + "\t\t<parametroSitioWeb nombre = \"USUARIO_MODIFICACION\">\n"
+                + "\t\t\t[" + sitioWeb.getUsuarioModificacion() + "]" + " \n"
+                + " \t\t</parametroSitioWeb>\n"
+                + "\t</parametrosSitioWeb>\n"
+                + "\t<paginasSitioWeb>\n"
+                + "\t\t<pagina>\n"
+                + "\t\t\t<parametrosDePagina>\n"
+                + "\t\t\t<parametroDePagina nombre = \"ID\">\n"
+                + "\t\t\t\t[" + paginaWeb.getId() + "]" + " \n"
+                + "\t\t\t</parametroDePagina>\n"
+                + "\t\t\t<parametroDePagina nombre = \"DIRECCION\">\n"
+                + "\t\t\t\t[" + paginaWeb.getDireccion() + "]" + " \n"
+                + "\t\t\t</parametroDePagina>                \n"
+                + "\t\t\t<parametroDePagina nombre = \"TITULO\">\n"
+                + "\t\t\t\t[" + paginaWeb.getTitulo() + "]" + " \n"
+                + "\t\t\t</parametroDePagina>\n"
+                + "\t\t\t<parametroDePagina nombre = \"SITIO\">\n"
+                + "\t\t\t\t[" + paginaWeb.getSitio() + "]" + " \n"
+                + "\t\t\t</parametroDePagina>\n"
+                + "\t\t\t<parametroDePagina nombre = \"PADRE\">\n"
+                + "\t\t\t\t[" + paginaWeb.getPadre() + "]" + " \n"
+                + "\t\t\t</parametroDePagina>\n"
+                + "\t\t\t<parametroDePagina nombre = \"USUARIO_CREACION\">\n"
+                + "\t\t\t\t[" + paginaWeb.getUsuarioCreacion() + "]" + " \n"
+                + "\t\t\t</parametroDePagina>\n"
+                + " \t\t\t<parametroDePagina nombre = \"FECHA_CREACION\">\n"
+                + "\t\t\t\t[" + paginaWeb.getFechaDeCreacion() + "]" + " \n"
+                + "\t\t\t</parametroDePagina>\n"
+                + "\t\t\t<parametroDePagina nombre = \"FECHA_MODIFICACION\">\n"
+                + "\t\t\t\t[" + paginaWeb.getFechaModificacion() + "]" + " \n"
+                + "\t\t\t</parametroDePagina>\n"
+                + "\t\t\t<parametroDePagina nombre = \"USUARIO_MODIFICACION\">\n"
+                + "\t\t\t\t[" + paginaWeb.getUsuarioModificacion() + "]" + " \n"
+                + "\t\t\t</parametroDePagina>\n"
+                + "\t\t\t</parametrosDePagina>\n"
+                + "\t\t</pagina>\n"
+                + "\t</paginasSitioWeb>\n"
+                + "</sitioWeb>\n";
     }
 
 }

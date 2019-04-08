@@ -5,7 +5,6 @@
  */
 package Objetos;
 
-import java.util.ArrayList;
 
 /**
  *
@@ -13,28 +12,19 @@ import java.util.ArrayList;
  */
 public class Etiqueta {
 
-    private String idDePagina;
-    private ArrayList<String> etiquetas;
+    private String etiqueta;
 
-    public Etiqueta(String idDePagina, ArrayList<String> etiquetas) {
-        this.idDePagina = idDePagina;
-        this.etiquetas = etiquetas;
+    public Etiqueta(String etiqueta) {
+        this.etiqueta=etiqueta.substring(1,etiqueta.length()-1);
     }
 
-    public String getIdDePagina() {
-        return idDePagina;
+    public String getEtiqueta() {
+        return etiqueta;
     }
 
-    public void setIdDePagina(String idDePagina) {
-        this.idDePagina = idDePagina;
+    public void setEtiqueta(String etiqueta) {
+        this.etiqueta = etiqueta;
     }
-
-    public ArrayList<String> getEtiquetas() {
-        return etiquetas;
-    }
-
-    public void setEtiquetas(ArrayList<String> etiquetas) {
-        this.etiquetas = etiquetas;
-    }
-
+    
+    
 }

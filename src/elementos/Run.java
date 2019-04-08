@@ -8,6 +8,7 @@ package elementos;
 import ManejadoresDeTexto.LectorDeDatos;
 import Objetos.Componente;
 import Objetos.Etiqueta;
+import Objetos.ManejadorDeMensajes;
 import Objetos.PaginaWeb;
 import Objetos.SitioWeb;
 import Objetos.Usuario;
@@ -26,10 +27,8 @@ import recuperacionPaginas.parser;
  */
 public class Run {
 
-    public static ArrayList<Componente> listaDeComponentes = new ArrayList<>();
-    public static ArrayList<Etiqueta> listaDeEtiquetas = new ArrayList<>();
-    public static ArrayList<PaginaWeb> listaDePaginasWeb = new ArrayList<>();
     public static ArrayList<SitioWeb> listaDeSitiosWeb = new ArrayList<>();
+    public static ArrayList<PaginaWeb> listaDePaginasWeb = new ArrayList<>();
     public static ArrayList<Usuario> listaDeUsuarios = new ArrayList<>();
 
     public static void main(String[] args) {
@@ -37,20 +36,16 @@ public class Run {
         cargaDeElementosAnteriores();
         //Leyendo los usuarios existenetes
         cargaDeUsuarios();
-        for (Usuario usuario : listaDeUsuarios) {
-            System.out.println("USUARIO:"+usuario.getNombre());
-        }
+
+        //ManejadorDeMensajes.escribirSitioWeb();
         //Creando servidor para recibir texto 
 
-        /*
-       ManejadorDeServidor  nuevoServidor = new ManejadorDeServidor();
-       nuevoServidor.iniciarServidor(45000);//Conexion para RECIBIR TEXTO
-       
-         */
- /*
+        ManejadorDeServidor  nuevoServidor = new ManejadorDeServidor();
+        nuevoServidor.iniciarServidor(6000);//Conexion para RECIBIR TEXTO
         if (listaDeSitiosWeb.isEmpty()) {
             System.out.println("ES VACIA LA LISTA");
         }
+
         System.out.println("------------------------------------------------------------------------------------------------");
 
         //------------------------------SITIO WEB-----------------------------------------
@@ -61,11 +56,24 @@ public class Run {
             System.out.println(sitioWeb.getFechaModificacion());
             System.out.println(sitioWeb.getUsuarioModificacion());
         }
+        System.out.println("NUMERO DE PAGINAS WEB:" + listaDePaginasWeb.size());
+        for (PaginaWeb paginaWeb : listaDePaginasWeb) {
+            System.out.println("Paginaweb:" + paginaWeb.getId());
+            for (Componente comp : paginaWeb.getListaDeComponentes()) {
+                System.out.println("Componente:" + comp.getId());
+            }
+            for (Etiqueta etiqueta : paginaWeb.getListaDeEtiquetas()) {
+                System.out.println("Etiqueta:" + etiqueta.getEtiqueta());
+            }
+        }
+
+        /*
         System.out.println("------------------------------------------------------------------------------------------------");
         //------------------------------PAGINA WEB------------------------------------------
 
         for (PaginaWeb paginaWeb : listaDePaginasWeb) {
             System.out.println("PAGINA WEB:" + paginaWeb.getId());
+            System.out.println("Direccion:"+paginaWeb.getDireccion());
             System.out.println(paginaWeb.getTitulo());
             System.out.println(paginaWeb.getSitio());
             System.out.println(paginaWeb.getPadre());
@@ -74,6 +82,10 @@ public class Run {
             System.out.println(paginaWeb.getFechaModificacion());
             System.out.println(paginaWeb.getUsuarioModificacion());
         }
+
+
+         */
+ /*
         System.out.println("------------------------------------------------------------------------------------------------");
 
         //------------------------------ETIQUETAS-----------------------------------------
@@ -83,7 +95,8 @@ public class Run {
                 System.out.println(eti);
             }
         }
-
+         */
+ /*
         //------------------------------COMPONENTES-----------------------------------------
 
         System.out.println("------------------------------------------------------------------------------------------------");
@@ -98,12 +111,14 @@ public class Run {
 
     public static void cargaDeElementosAnteriores() {
         String elementos = LectorDeDatos.leerDatos("/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
-        AnalizadorLexicoPaginas lex = new AnalizadorLexicoPaginas(new BufferedReader(new StringReader(elementos)));
-        parser sintactico = new parser(lex);
-        try {
-            sintactico.parse();
-        } catch (Exception ex) {
-            Logger.getLogger(Run.class.getName()).log(Level.SEVERE, null, ex);
+        if (elementos != null && !elementos.isEmpty()) {
+            AnalizadorLexicoPaginas lex = new AnalizadorLexicoPaginas(new BufferedReader(new StringReader(elementos)));
+            parser sintactico = new parser(lex);
+            try {
+                sintactico.parse();
+            } catch (Exception ex) {
+                Logger.getLogger(Run.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 

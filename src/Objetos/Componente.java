@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Componente {
 
-    private String id, pagina, clase;//Parametros
+    private String id, clase;//Parametros
     private String texto, alineacion, color, origen, altura, ancho, padre, etiquetas;//Atributos segun clase
 
     public Componente() {
@@ -25,9 +25,6 @@ public class Componente {
             switch (token.getTipo()) {
                 case "ID":
                     this.id = valor;
-                    break;
-                case "PAGINA":
-                    this.pagina = valor;
                     break;
                 case "CLASE":
                     this.clase = valor;
@@ -66,15 +63,7 @@ public class Componente {
     }
 
     public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getPagina() {
-        return pagina;
-    }
-
-    public void setPagina(String pagina) {
-        this.pagina = pagina;
+        this.id = id.substring(1,id.length()-1);
     }
 
     public String getClase() {
@@ -82,7 +71,7 @@ public class Componente {
     }
 
     public void setClase(String clase) {
-        this.clase = clase;
+        this.clase = clase.substring(1,clase.length()-1);
     }
 
     public String getTexto() {
@@ -90,7 +79,7 @@ public class Componente {
     }
 
     public void setTexto(String texto) {
-        this.texto = texto;
+        this.texto = texto.substring(1,texto.length()-1);
     }
 
     public String getAlineacion() {
@@ -98,7 +87,7 @@ public class Componente {
     }
 
     public void setAlineacion(String alineacion) {
-        this.alineacion = alineacion;
+        this.alineacion = alineacion.substring(0,alineacion.length()-1);
     }
 
     public String getColor() {
@@ -106,7 +95,7 @@ public class Componente {
     }
 
     public void setColor(String color) {
-        this.color = color;
+        this.color = color.substring(1,color.length()-1);
     }
 
     public String getOrigen() {
@@ -114,7 +103,7 @@ public class Componente {
     }
 
     public void setOrigen(String origen) {
-        this.origen = origen;
+        this.origen = origen.substring(1,origen.length()-1);
     }
 
     public String getAltura() {
@@ -122,7 +111,7 @@ public class Componente {
     }
 
     public void setAltura(String altura) {
-        this.altura = altura;
+        this.altura = altura.substring(1,altura.length()-1);
     }
 
     public String getAncho() {
@@ -130,7 +119,7 @@ public class Componente {
     }
 
     public void setAncho(String ancho) {
-        this.ancho = ancho;
+        this.ancho = ancho.substring(1,ancho.length()-1);
     }
 
     public String getPadre() {
@@ -138,7 +127,7 @@ public class Componente {
     }
 
     public void setPadre(String padre) {
-        this.padre = padre;
+        this.padre = padre.substring(1,padre.length()-1);
     }
 
     public String getEtiquetas() {
@@ -146,7 +135,7 @@ public class Componente {
     }
 
     public void setEtiquetas(String etiquetas) {
-        this.etiquetas = etiquetas;
+        this.etiquetas = etiquetas.substring(1,etiquetas.length()-1);
     }
 
 }

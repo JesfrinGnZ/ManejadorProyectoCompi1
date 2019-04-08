@@ -1,0 +1,226 @@
+/*--------------- 1ra Area: Codigo de Usuario -----------------------*/
+//-------> importaciones, paquetes
+
+package analizadoresConvertidoresHtml;
+import java_cup.runtime.*;
+import java.util.ArrayList;
+import Objetos.*;
+import ManejadoresDeTextoHtml.*;
+
+
+parser code {:
+
+
+    int fila,columna;
+    String lexema;
+    //  VARIABLES
+    private Usuario usuario;
+    ArrayList<Token> listaDeTokens;
+    ArrayList<Token> listaDeEtiquetas;
+    ArrayList<Token> listaDeAtributos;
+    // Connect this parser to a scanner!
+    public parser(AnalizadorLexicoTextoCliente lex) {
+	super(lex);
+        this.usuario=usuario;
+        listaDeTokens=new ArrayList<>();
+        listaDeEtiquetas= new ArrayList<>();
+        listaDeAtributos = new ArrayList<>();
+    }
+
+    //Metodo al que se llama automaticamente ante algun error sintactico
+    public void syntax_error(Symbol s){        
+        try {
+        this.lexema =s.value.toString();
+        String lexema = s.value.toString();
+        int fila = s.left;
+        int columna = s.right;
+        System.out.println("ERROR SINTACTICO RECUPERADO");
+        } catch (Exception e) {
+            System.out.println("Error Recuperable se esperaba mas simbolos en ultima fila");
+        } 
+    }
+
+    //Metodo al que se llama en el momento en que ya no es posible una recuperacion de errores
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{        
+        try {
+            String lexema = s.value.toString();
+            int fila = s.left;
+            int columna = s.right;
+            System.out.println("ERROR NO RECUPERABLE");
+        } catch (Exception e) {
+            System.out.println("ERROR EN LA ESTRUCUTURA PRINCIPAL acciones");
+        }
+    }
+/*
+    private void iniciarSitioWeb(Object i,String tipo,int ileft,int iright){
+  
+    }
+
+
+    private void iniciarPaginaWeb(Object i,String tipo,int ileft,int iright){
+
+    }
+*/
+:}
+
+/*--------------- 2da Area: Declaraciones -----------------------*/
+
+terminal String         ACCION,ACCIONES,PARAMETROS,PARAMETRO,ATRIBUTOS,ATRIBUTO,NOMBRE,ETIQUETAS,ETIQUETA,VALOR,
+                        DIAGONAL,MENOR_QUE,MAYOR_QUE,IGUAL,COMILLA,
+                        NUEVO_SITIO_WEB,ID,USUARIO_CREACION,FECHA_CREACION,FECHA_MODIFICACION,USUARIO_MODIFICACION,
+                        BORRAR_SITIO_WEB,NUEVA_PAGINA,TITULO,SITIO,PADRE,BORRAR_PAGINA,MODIFICAR_PAGINA,
+                        AGREGAR_COMPONENTE,PAGINA,CLASE,BORRAR_COMPONENTE,MODIFICAR_COMPONENTE,
+                        PARRAFO,IMAGEN,VIDEO,MENU,TEXTO,ALINEACION,CENTRAR,IZQUIERDA,DERECHA,JUSTIFICAR,
+                        COLOR,ORIGEN,ALTURA,ANCHO,
+                        NUMERO,FORMATO_FECHA,IDENTIFICADOR,CODIGO_COLOR,ORACION,URL,IDENTIFICADOR_COMILLA,
+                        CONJUNTO_DE_ETIQUETAS;
+
+non terminal Object     inicio,acciones,unaAccion,conjuntoDeAcciones,cabecera,cuerpo,etiquetas,atributos,
+                        conjuntoDeParametros,unParametro,conjuntoDeEtiquetas,unaEtiqueta,
+                        conjuntoDeAtributos, unAtributo,fin,tipoDeClase,tipoDeAlineacion,etiquetasMenu;
+/*--------------- 3ra Area: Reglas Semanticas -----------------------*/
+
+
+start with inicio;
+
+inicio::= unaAccion|acciones;
+
+acciones::= MENOR_QUE ACCIONES MAYOR_QUE conjuntoDeAcciones MENOR_QUE DIAGONAL ACCIONES MAYOR_QUE
+            {::};
+
+conjuntoDeAcciones::= conjuntoDeAcciones unaAccion | unaAccion;
+
+unaAccion::=cabecera:i cuerpo fin
+            {:System.out.println("CABECERA ES DE TIPO:"+i);
+            Token accion= new Token(i.toString(),i.toString());
+            ManejadorDeExpresiones.manejarExpresionSinEtiquetasNiAtributos(accion,listaDeTokens);
+            listaDeTokens=new ArrayList<>();
+            System.out.println("ESTRUCTURA SIN ATRIBUTOS NI ETIQUETAS");
+            :}|
+
+            cabecera:i cuerpo etiquetas fin
+            {:Token accion= new Token(i.toString(),i.toString());
+            ManejadorDeExpresiones.manejarExpresionConEtiquetas(accion,listaDeTokens,listaDeEtiquetas);
+            listaDeTokens=new ArrayList<>();
+            listaDeEtiquetas=new ArrayList<>();
+            System.out.println("ESTRUCTURA CON ETIQUETAS");
+            :}|
+            
+            cabecera:i cuerpo atributos fin
+            {:Token accion= new Token(i.toString(),i.toString());
+            ManejadorDeExpresiones.manejarExpresionConAtributos(accion,listaDeTokens,listaDeAtributos);
+            listaDeTokens=new ArrayList<>();
+            listaDeAtributos=new ArrayList<>();
+            System.out.println("ESTRUCTURA CON ATRIBUTOS");
+            :}|
+            error{:System.out.println("ERRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRR");listaDeTokens=new ArrayList<>();
+            listaDeEtiquetas=new ArrayList<>();:};
+
+fin::= MENOR_QUE DIAGONAL ACCION MAYOR_QUE;
+
+cabecera ::= MENOR_QUE ACCION NOMBRE IGUAL COMILLA  NUEVO_SITIO_WEB:i COMILLA MAYOR_QUE
+            {:RESULT=i;:}|
+            MENOR_QUE ACCION NOMBRE IGUAL COMILLA BORRAR_SITIO_WEB:i COMILLA MAYOR_QUE
+            {:RESULT=i;:}|
+            MENOR_QUE ACCION NOMBRE IGUAL COMILLA NUEVA_PAGINA:i COMILLA MAYOR_QUE
+            {:RESULT=i;:}|
+            MENOR_QUE ACCION NOMBRE IGUAL COMILLA BORRAR_PAGINA:i COMILLA MAYOR_QUE
+            {:RESULT=i;:}|
+            MENOR_QUE ACCION NOMBRE IGUAL COMILLA MODIFICAR_PAGINA:i COMILLA MAYOR_QUE
+            {:RESULT=i;:}|
+            MENOR_QUE ACCION NOMBRE IGUAL COMILLA AGREGAR_COMPONENTE:i COMILLA MAYOR_QUE
+            {:RESULT=i;:}|
+            MENOR_QUE ACCION NOMBRE IGUAL COMILLA BORRAR_COMPONENTE:i COMILLA MAYOR_QUE
+            {:RESULT=i;:}|
+            MENOR_QUE ACCION NOMBRE IGUAL COMILLA MODIFICAR_COMPONENTE:i COMILLA MAYOR_QUE
+            {:RESULT=i;:};
+
+cuerpo ::= MENOR_QUE PARAMETROS MAYOR_QUE conjuntoDeParametros MENOR_QUE DIAGONAL PARAMETROS MAYOR_QUE;
+
+conjuntoDeParametros::= conjuntoDeParametros unParametro | unParametro;
+
+unParametro::= MENOR_QUE PARAMETRO NOMBRE IGUAL  COMILLA ID:i  COMILLA MAYOR_QUE  IDENTIFICADOR:t  MENOR_QUE DIAGONAL PARAMETRO MAYOR_QUE
+               {:RESULT=t;listaDeTokens.add(new Token("ID",t));:}|
+               
+               MENOR_QUE PARAMETRO NOMBRE IGUAL  COMILLA USUARIO_CREACION:i  COMILLA MAYOR_QUE  IDENTIFICADOR:t  MENOR_QUE DIAGONAL PARAMETRO MAYOR_QUE
+               {:RESULT=t;listaDeTokens.add(new Token("USUARIO_CREACION",t));:}|
+               
+               MENOR_QUE PARAMETRO NOMBRE IGUAL  COMILLA FECHA_CREACION:i COMILLA  MAYOR_QUE  FORMATO_FECHA:t  MENOR_QUE DIAGONAL PARAMETRO MAYOR_QUE
+               {:RESULT=t;listaDeTokens.add(new Token("FECHA_CREACION",t));:}|
+               
+                MENOR_QUE PARAMETRO NOMBRE IGUAL  COMILLA FECHA_MODIFICACION:i  COMILLA MAYOR_QUE FORMATO_FECHA:t  MENOR_QUE DIAGONAL PARAMETRO MAYOR_QUE
+               {:RESULT=t;listaDeTokens.add(new Token("FECHA_MODIFICACION",t));:}|
+               
+               MENOR_QUE PARAMETRO NOMBRE IGUAL  COMILLA USUARIO_MODIFICACION:i COMILLA  MAYOR_QUE IDENTIFICADOR:t  MENOR_QUE DIAGONAL PARAMETRO MAYOR_QUE
+               {:RESULT=t;listaDeTokens.add(new Token("USUARIO_MODIFICACION",t));:}|
+               
+               MENOR_QUE PARAMETRO NOMBRE IGUAL  COMILLA TITULO:i  COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL PARAMETRO MAYOR_QUE
+               {:RESULT=t;listaDeTokens.add(new Token("TITULO",t));:}|
+               
+               MENOR_QUE PARAMETRO NOMBRE IGUAL  COMILLA SITIO:i  COMILLA MAYOR_QUE  IDENTIFICADOR:t  MENOR_QUE DIAGONAL PARAMETRO MAYOR_QUE
+               {:RESULT=t;listaDeTokens.add(new Token("SITIO",t));:}|
+               
+               MENOR_QUE PARAMETRO NOMBRE IGUAL  COMILLA PADRE:i  COMILLA MAYOR_QUE  IDENTIFICADOR:t  MENOR_QUE DIAGONAL PARAMETRO MAYOR_QUE
+               {:RESULT=t;listaDeTokens.add(new Token("PADRE",t));:}|
+               
+               MENOR_QUE PARAMETRO NOMBRE IGUAL  COMILLA PAGINA:i  COMILLA MAYOR_QUE  IDENTIFICADOR:t  MENOR_QUE DIAGONAL PARAMETRO MAYOR_QUE
+               {:RESULT=t;listaDeTokens.add(new Token("PAGINA",t));:}|
+              
+               MENOR_QUE PARAMETRO NOMBRE IGUAL  COMILLA CLASE:i  COMILLA MAYOR_QUE tipoDeClase:t MENOR_QUE DIAGONAL PARAMETRO MAYOR_QUE
+               {:RESULT=i;listaDeTokens.add(new Token("CLASE",t.toString()));:}|
+               error{:listaDeTokens=new ArrayList<>();
+            listaDeEtiquetas=new ArrayList<>();:};
+               
+
+tipoDeClase::=TITULO:e {:RESULT=e;:}|
+              PARRAFO:e {:RESULT=e;:}|
+              IMAGEN:e {:RESULT=e;:}|
+              VIDEO:e {:RESULT=e;:}|
+              MENU:e {:RESULT=e;:};
+
+etiquetas::= MENOR_QUE ETIQUETAS MAYOR_QUE conjuntoDeEtiquetas MENOR_QUE DIAGONAL ETIQUETAS MAYOR_QUE{::};
+
+conjuntoDeEtiquetas::= conjuntoDeEtiquetas unaEtiqueta|unaEtiqueta;
+
+unaEtiqueta ::= MENOR_QUE ETIQUETA VALOR IGUAL  IDENTIFICADOR_COMILLA:t  DIAGONAL MAYOR_QUE
+                {:listaDeEtiquetas.add(new Token("etiqueta",t));:};
+
+atributos::= MENOR_QUE ATRIBUTOS MAYOR_QUE conjuntoDeAtributos MENOR_QUE DIAGONAL ATRIBUTOS MAYOR_QUE;
+
+conjuntoDeAtributos::= conjuntoDeAtributos unAtributo | unAtributo;
+
+unAtributo::= MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA TEXTO COMILLA  MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:listaDeAtributos.add(new Token("texto",t.substring(0,t.length()-1)));:}|
+              
+              MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA ALINEACION  COMILLA MAYOR_QUE tipoDeAlineacion:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:listaDeAtributos.add(new Token("alineacion",t.toString().substring(0,t.toString().length()-1)));:}|
+              
+              MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA COLOR  COMILLA MAYOR_QUE CODIGO_COLOR:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:listaDeAtributos.add(new Token("color",t.substring(0,t.length()-1)));:}|
+
+              MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA ORIGEN  COMILLA MAYOR_QUE URL:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:listaDeAtributos.add(new Token("origen",t.substring(0,t.length()-1)));:}|
+
+              MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA ALTURA  COMILLA MAYOR_QUE NUMERO:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:listaDeAtributos.add(new Token("altura",t.substring(0,t.length()-1)));:}|
+
+              MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA ANCHO  COMILLA MAYOR_QUE NUMERO:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:listaDeAtributos.add(new Token("ancho",t.substring(0,t.length()-1)));:}|
+
+              MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA PADRE  COMILLA MAYOR_QUE IDENTIFICADOR:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:listaDeAtributos.add(new Token("padre",t.substring(0,t.length()-1)));:}|
+
+              MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA ETIQUETAS  COMILLA MAYOR_QUE etiquetasMenu:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
+              {:listaDeAtributos.add(new Token("etiquetas",t.toString().substring(0,t.toString().length()-1)));:}|
+
+              error {:listaDeTokens=new ArrayList<>();
+            listaDeEtiquetas=new ArrayList<>();:};
+
+
+tipoDeAlineacion::=CENTRAR:t {:RESULT =t;:}|
+                   IZQUIERDA:t {:RESULT =t;:}|
+                   DERECHA:t {:RESULT =t;:}|
+                   JUSTIFICAR:t {:RESULT=t;:};
+
+etiquetasMenu::= IDENTIFICADOR:e {:RESULT=e;:}|CONJUNTO_DE_ETIQUETAS:e {:RESULT=e;:};
+            

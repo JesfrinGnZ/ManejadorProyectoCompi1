@@ -16,9 +16,9 @@ import java.util.logging.Logger;
  * @author jesfrin
  */
 public class EscritorDeDatos {
-    
-        public static void escribirDatos(String texto) {
-        File direccionDeUsuarios = new File("/home/jesfrin/Documentos/ArchivosP1Compi1/Usuarios.txt");
+
+    public static void agregarDatosABaseDeDatos(String texto, String direccion) {
+        File direccionDeUsuarios = new File(direccion);
         try {
             BufferedWriter bf = new BufferedWriter(new FileWriter(direccionDeUsuarios, true));
             bf.append(texto);
@@ -27,4 +27,27 @@ public class EscritorDeDatos {
             Logger.getLogger(LectorDeDatos.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public static void reescribirBaseDeDatos(String texto, String direccion) {
+        File direccionDeUsuarios = new File(direccion);
+        try {
+            BufferedWriter bf = new BufferedWriter(new FileWriter(direccionDeUsuarios));
+            bf.write(texto);
+            bf.close();
+        } catch (Exception ex) {
+            Logger.getLogger(LectorDeDatos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public static void escribirHtml(String texto, String direccion) {
+        File direccionDeUsuarios = new File(direccion);
+        try {
+            BufferedWriter bf = new BufferedWriter(new FileWriter(direccionDeUsuarios));
+            bf.write(texto);
+            bf.close();
+        } catch (Exception ex) {
+            Logger.getLogger(LectorDeDatos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }
