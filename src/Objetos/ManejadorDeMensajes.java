@@ -13,8 +13,6 @@ import elementos.Run;
  */
 public class ManejadorDeMensajes {
 
-
-
     //Mensaje que se le mandar a la aplicacion cliente
     public static String mensajeParaCliente = "";
 
@@ -90,74 +88,75 @@ public class ManejadorDeMensajes {
 
     private static String escribirComponentes(PaginaWeb paginaWeb) {
         String textoDeComponentes = "";
-        for (Componente componente : paginaWeb.getListaDeComponentes()) {
-            textoDeComponentes += " <componentes>\n"
-                    + "                <componente nombre = \"" + componente.getClase() + "\">\n"
-                    + "                    <atributos>\n"
-                    + "                        <atributo nombre =\"ID\">\n"
-                    + "                            [" + componente.getId() + "]\n"
-                    + "                         </atributo>                  ";
+        if (paginaWeb.getListaDeComponentes() != null) {
+            for (Componente componente : paginaWeb.getListaDeComponentes()) {
+                textoDeComponentes += " <componentes>\n"
+                        + "                <componente nombre = \"" + componente.getClase() + "\">\n"
+                        + "                    <atributos>\n"
+                        + "                        <atributo nombre =\"ID\">\n"
+                        + "                            [" + componente.getId() + "]\n"
+                        + "                         </atributo>                  ";
 
-            if (componente.getTexto() != null) {
-                textoDeComponentes += "                        <atributo nombre =\"TEXTO\">\n"
-                        + "                            [" + componente.getTexto() + "]\n"
-                        + "                        </atributo>";
-            }
-            if (componente.getAlineacion() != null) {
-                textoDeComponentes += "                        <atributo nombre =\"ALINEACION\">\n"
-                        + "                            [" + componente.getAlineacion() + "]\n"
-                        + "                        </atributo>";
-            }
-            if (componente.getColor() != null) {
-                textoDeComponentes += "                        <atributo nombre =\"COLOR\">\n"
-                        + "                            [" + componente.getColor() + "]\n"
-                        + "                        </atributo>";
-            }
+                if (componente.getTexto() != null) {
+                    textoDeComponentes += "                        <atributo nombre =\"TEXTO\">\n"
+                            + "                            [" + componente.getTexto() + "]\n"
+                            + "                        </atributo>";
+                }
+                if (componente.getAlineacion() != null) {
+                    textoDeComponentes += "                        <atributo nombre =\"ALINEACION\">\n"
+                            + "                            [" + componente.getAlineacion() + "]\n"
+                            + "                        </atributo>";
+                }
+                if (componente.getColor() != null) {
+                    textoDeComponentes += "                        <atributo nombre =\"COLOR\">\n"
+                            + "                            [" + componente.getColor() + "]\n"
+                            + "                        </atributo>";
+                }
 
-            if (componente.getOrigen() != null) {
-                textoDeComponentes += "                        <atributo nombre =\"ORIGEN\">\n"
-                        + "                            [" + componente.getOrigen() + "]\n"
-                        + "                        </atributo>";
-            }
+                if (componente.getOrigen() != null) {
+                    textoDeComponentes += "                        <atributo nombre =\"ORIGEN\">\n"
+                            + "                            [" + componente.getOrigen() + "]\n"
+                            + "                        </atributo>";
+                }
 
-            if (componente.getAltura() != null) {
-                textoDeComponentes += "                        <atributo nombre =\"ALTURA\">\n"
-                        + "                            [" + componente.getAltura() + "]\n"
-                        + "                        </atributo>";
-            }
+                if (componente.getAltura() != null) {
+                    textoDeComponentes += "                        <atributo nombre =\"ALTURA\">\n"
+                            + "                            [" + componente.getAltura() + "]\n"
+                            + "                        </atributo>";
+                }
 
-            if (componente.getAncho() != null) {
-                textoDeComponentes += "                        <atributo nombre =\"ANCHO\">\n"
-                        + "                            [" + componente.getAncho() + "]\n"
-                        + "                        </atributo>";
-            }
+                if (componente.getAncho() != null) {
+                    textoDeComponentes += "                        <atributo nombre =\"ANCHO\">\n"
+                            + "                            [" + componente.getAncho() + "]\n"
+                            + "                        </atributo>";
+                }
 
-            if (componente.getPadre() != null) {
-                textoDeComponentes += "                        <atributo nombre =\"PADRE\">\n"
-                        + "                            [" + componente.getPadre() + "]\n"
-                        + "                        </atributo>";
-            }
+                if (componente.getPadre() != null) {
+                    textoDeComponentes += "                        <atributo nombre =\"PADRE\">\n"
+                            + "                            [" + componente.getPadre() + "]\n"
+                            + "                        </atributo>";
+                }
 
-            if (componente.getEtiquetas() != null) {
-                textoDeComponentes += "                        <atributo nombre =\"ETIQUETAS\">\n"
-                        + "                            [" + componente.getEtiquetas() + "]\n"
-                        + "                        </atributo>";
-            }
+                if (componente.getEtiquetas() != null) {
+                    textoDeComponentes += "                        <atributo nombre =\"ETIQUETAS\">\n"
+                            + "                            [" + componente.getEtiquetas() + "]\n"
+                            + "                        </atributo>";
+                }
 
+            }
         }
+
         return textoDeComponentes;
     }
 
     private static String escribirEtiquetas(PaginaWeb paginaWeb) {
         String etiquetas = "";
-        for (Etiqueta etiqueta : paginaWeb.getListaDeEtiquetas()) {
-            etiquetas += "<etiqueta nombre =[" + etiqueta.getEtiqueta() + "]/>\n";
+        if (paginaWeb.getListaDeEtiquetas() != null) {
+            for (Etiqueta etiqueta : paginaWeb.getListaDeEtiquetas()) {
+                etiquetas += "<etiqueta nombre =[" + etiqueta.getEtiqueta() + "]/>\n";
+            }
         }
-        if (etiquetas.equals("")) {
-            return "";
-        } else {
-            return "<etiquetas>\n" + etiquetas + "</etiquetas>\n";
-        }
+        return etiquetas;
     }
 
     public static void buscarPaginasHijas(String idSitio) {
@@ -174,12 +173,17 @@ public class ManejadorDeMensajes {
 
     public static String escribirSitiosWeb() {
         for (SitioWeb sitioWeb : Run.listaDeSitiosWeb) {
-            textoBaseDeDatos = escribirSitioWeb(sitioWeb);
+            textoBaseDeDatos += escribirSitioWeb(sitioWeb);
             buscarPaginasHijas(sitioWeb.getId());
             textoBaseDeDatos += "</paginasSitioWeb>\n";
             textoBaseDeDatos += "</sitioWeb>";
+            System.out.println(",.,.,.,.,<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
             System.out.println(textoBaseDeDatos);
+            System.out.println(",.,.,.,.,<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+
         }
+
         return textoBaseDeDatos;
+
     }
 }

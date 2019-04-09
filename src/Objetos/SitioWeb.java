@@ -20,8 +20,6 @@ public class SitioWeb {
     public SitioWeb() {
     }
 
-
-
     public void darValoresCreacionyVerificacion(ArrayList<Token> listaDeTokens) {
         int contador = 0;
         for (Token token : listaDeTokens) {
@@ -29,7 +27,7 @@ public class SitioWeb {
             switch (token.getTipo()) {
                 case "ID":
                     this.id = lexema;
-                    ManejadorDeMensajes.agregarMensaje("-------------SITIO WEB ID:" + this.id + "----------------");
+                    ManejadorDeMensajes.agregarMensaje("-------------CREACION SITIO WEB ID:" + this.id + "----------------");
                     if (ManejadorDeVerificaciones.verificarSiExisteSitioWeb(this.id)) {
                         contador++;
                     }
@@ -68,6 +66,28 @@ public class SitioWeb {
             //Se escribio la pagina html
             EscritorDeDatos.agregarDatosABaseDeDatos(escribirSitioWeb(this, index1), "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
 
+        }
+    }
+
+    public static void borrarSitioWeb(ArrayList<Token> listaDeTokens) {
+        String idDeSitioWeb = listaDeTokens.get(0).getLexema();
+        SitioWeb sitioWebAEliminar = null;
+        ManejadorDeMensajes.agregarMensaje("-------------ELIMINACION SITIO WEB ID:" + idDeSitioWeb + "----------------");
+        for (SitioWeb sitioWeb : Run.listaDeSitiosWeb) {
+            if (sitioWeb.getId().equals(idDeSitioWeb)) {
+                sitioWebAEliminar = sitioWeb;
+            }
+        }
+        if (sitioWebAEliminar == null) {
+            //Mandar mensaje de que no se encontro el sitio web con el Id buscado
+            ManejadorDeMensajes.agregarMensaje("Error no se encontro el sitio web con id:" + idDeSitioWeb);
+        } else {
+            ManejadorDeEliminaciones.eliminarSitioYPaginas(sitioWebAEliminar);
+            //Reescribir el archivo
+            EscritorDeDatos.reescribirBaseDeDatos(ManejadorDeMensajes.escribirSitiosWeb(), "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
+            ManejadorDeMensajes.textoBaseDeDatos = "";
+            //Mandar mensaje que el sitio web y sus paginas se han eliminado
+            ManejadorDeMensajes.agregarMensaje("Se ha eliminado el sitio web con id:" + idDeSitioWeb + " asi como sus paginas");
         }
     }
 

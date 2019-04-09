@@ -22,11 +22,12 @@ public class ManejadorDeExpresiones {
                 sitioWeb.darValoresCreacionyVerificacion(listaDeTokens);
                 break;
             case "BORRAR_SITIO_WEB":
+                SitioWeb.borrarSitioWeb(listaDeTokens);
                 //SitioWeb.analisisDeEliminacionSitioWeb(tipo, listaDeTokens, clienteFrame);
                 break;
             case "NUEVA_PAGINA":
                 PaginaWeb nuevaPagina = new PaginaWeb();
-                nuevaPagina.darValoresCreacionYModificacion(listaDeTokens);
+                nuevaPagina.darValoresCreacionYModificacion(listaDeTokens,null);
                 //PaginaWeb.analisisDeCreacionDePaginaWeb(tipo, listaDeTokens, clienteFrame, null);
                 break;
             case "BORRAR_PAGINA":

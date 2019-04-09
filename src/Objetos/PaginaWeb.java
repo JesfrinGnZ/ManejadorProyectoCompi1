@@ -37,7 +37,7 @@ public class PaginaWeb {
         this.usuarioModificacion = usuarioModificacion;
     }
 
-    public void darValoresCreacionYModificacion(ArrayList<Token> listaDeTokens) {
+    public void darValoresCreacionYModificacion(ArrayList<Token> listaDeTokens, ArrayList<Token> etiquetas) {
         int contador = 0;
         for (Token token : listaDeTokens) {
             String valor = token.getLexema().substring(1, token.getLexema().length() - 1);
@@ -86,6 +86,14 @@ public class PaginaWeb {
         }
 
         if (contador == 0) {
+            if (etiquetas != null) {//Se deben agregar etiquetas
+                ArrayList<Etiqueta> primerasEtiquetas = new ArrayList<>();
+                for (Token etiqueta : etiquetas) {
+                    listaDeEtiquetas.add(new Etiqueta(etiqueta.getLexema()));
+                }
+                this.listaDeEtiquetas = primerasEtiquetas;
+            }
+
             ManejadorDeMensajes.agregarMensaje("La pagina web con id:" + this.id + " se ha CREADO EXITOSAMENTE");
             //Se agrega els itio web a la lista
             Run.listaDePaginasWeb.add(this);//Le mandamos la pagina web que estamos creando y analizando
@@ -94,49 +102,68 @@ public class PaginaWeb {
             //Crear el html de la pagina web
             String html = this.crearHtmlDePaginaWeb();
             EscritorDeDatos.escribirHtml(html, "/home/jesfrin/Documentos/DocumentosHtml/" + this.id + ".html");
-            EscritorDeDatos.reescribirBaseDeDatos(ManejadorDeMensajes.escribirSitiosWeb(), "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
-            ManejadorDeMensajes.textoBaseDeDatos="";
+            ManejadorDeMensajes.escribirSitiosWeb();
+            EscritorDeDatos.reescribirBaseDeDatos(ManejadorDeMensajes.textoBaseDeDatos, "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
+            ManejadorDeMensajes.textoBaseDeDatos = "";
 //Se escribio la pagina html
             //EscritorDeDatos.agregarDatosABaseDeDatos(escribirSitioWeb(this, index1), "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
 
         }
     }
 
-    /*
-    public static String escribirPaginaWeb(PaginaWeb paginaWeb) {
-        return  "\t\t<pagina>\n"
-                + "\t\t\t<parametrosDePagina>\n"
-                + "\t\t\t<parametroDePagina nombre = \"ID\">\n"
-                + "\t\t\t\t[" + paginaWeb.getId() + "]" + " \n"
-                + "\t\t\t</parametroDePagina>\n"
-                + "\t\t\t<parametroDePagina nombre = \"DIRECCION\">\n"
-                + "\t\t\t\t[" + paginaWeb.getDireccion() + "]" + " \n"
-                + "\t\t\t</parametroDePagina>                \n"
-                + "\t\t\t<parametroDePagina nombre = \"TITULO\">\n"
-                + "\t\t\t\t[" + paginaWeb.getTitulo() + "]" + " \n"
-                + "\t\t\t</parametroDePagina>\n"
-                + "\t\t\t<parametroDePagina nombre = \"SITIO\">\n"
-                + "\t\t\t\t[" + paginaWeb.getSitio() + "]" + " \n"
-                + "\t\t\t</parametroDePagina>\n"
-                + "\t\t\t<parametroDePagina nombre = \"PADRE\">\n"
-                + "\t\t\t\t[" + paginaWeb.getPadre() + "]" + " \n"
-                + "\t\t\t</parametroDePagina>\n"
-                + "\t\t\t<parametroDePagina nombre = \"USUARIO_CREACION\">\n"
-                + "\t\t\t\t[" + paginaWeb.getUsuarioCreacion() + "]" + " \n"
-                + "\t\t\t</parametroDePagina>\n"
-                + " \t\t\t<parametroDePagina nombre = \"FECHA_CREACION\">\n"
-                + "\t\t\t\t[" + paginaWeb.getFechaDeCreacion() + "]" + " \n"
-                + "\t\t\t</parametroDePagina>\n"
-                + "\t\t\t<parametroDePagina nombre = \"FECHA_MODIFICACION\">\n"
-                + "\t\t\t\t[" + paginaWeb.getFechaModificacion() + "]" + " \n"
-                + "\t\t\t</parametroDePagina>\n"
-                + "\t\t\t<parametroDePagina nombre = \"USUARIO_MODIFICACION\">\n"
-                + "\t\t\t\t[" + paginaWeb.getUsuarioModificacion() + "]" + " \n"
-                + "\t\t\t</parametroDePagina>\n"
-                + "\t\t\t</parametrosDePagina>\n"
-                + "\t\t</pagina>\n";
+    public static void borrarPaginaWeb(ArrayList<Token> listaDeTokens) {
+        String idDePagina = listaDeTokens.get(0).getLexema();
+        PaginaWeb paginaWebAEliminar = null;
+        ManejadorDeMensajes.agregarMensaje("-------------ELIMINACION PAGINA WEB ID:" + idDePagina + "----------------");
+        for (PaginaWeb paginWeb : Run.listaDePaginasWeb) {//Buscar la pagina a eliminar
+            if (paginWeb.getId().equals(idDePagina)) {
+                paginaWebAEliminar = paginWeb;
+            }
+        }
+        if (paginaWebAEliminar == null) {
+            //Mandar mensaje de que no se encontro el sitio web con el Id buscado
+            ManejadorDeMensajes.agregarMensaje("Error no se encontro la pagina web con id:" + idDePagina);
+        } else {
+            ManejadorDeEliminaciones.eliminarPaginasEHijas(paginaWebAEliminar);
+            //Reescribir el archivo
+            EscritorDeDatos.reescribirBaseDeDatos(ManejadorDeMensajes.escribirSitiosWeb(), "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
+            ManejadorDeMensajes.textoBaseDeDatos = "";
+            //Mandar mensaje que el sitio web y sus paginas se han eliminado
+            ManejadorDeMensajes.agregarMensaje("Se ha eliminado la pagina web con id:" + idDePagina + " asi como sus paginas hijas");
+        }
     }
-     */
+
+    public static void modificarPagina(ArrayList<Token> listaDeTokens, ArrayList<Token> listaDeEtiquetas) {
+        String idPaginaWeb = listaDeTokens.get(0).getLexema();
+        ManejadorDeMensajes.agregarMensaje("-------------MODIFICACION PAGINA WEB ID:" + idPaginaWeb + "----------------");
+        PaginaWeb paginaWebAModificar = null;
+        for (PaginaWeb paginaWeb : Run.listaDePaginasWeb) {//Se busca la pagina web que se quiere modificar
+            if (paginaWeb.getId().equals(idPaginaWeb)) {
+                paginaWebAModificar = paginaWeb;
+            }
+        }
+        if (paginaWebAModificar != null) {//Se encontro la pagina web
+            if (listaDeTokens.size() == 2) {//Trae ID Y TITULO, por lo que se modifica titulo
+                paginaWebAModificar.setTitulo(listaDeTokens.get(1).getLexema());
+            }
+            if (listaDeEtiquetas != null) {//Existen etiquetas para modificar
+                ArrayList<Etiqueta> nuevaListaDeEtiquetas = new ArrayList<>();//Se crea una nueva lista de etiquetas
+                for (Token etiqueta : listaDeEtiquetas) {//Se llena la lista nueva de etiquetas con la que trae las actuales
+                    nuevaListaDeEtiquetas.add(new Etiqueta(etiqueta.getLexema()));
+                }
+                //Se modifica la lista de etiquetas
+                paginaWebAModificar.setListaDeEtiquetas(nuevaListaDeEtiquetas);
+            }
+            ManejadorDeMensajes.agregarMensaje("Se ha modificado la pagina web:" + idPaginaWeb);
+            EscritorDeDatos.reescribirBaseDeDatos(ManejadorDeMensajes.escribirSitiosWeb(), "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
+            ManejadorDeMensajes.textoBaseDeDatos = "";
+        } else {//Se manda que no se encontro la pagina web
+            ManejadorDeMensajes.agregarMensaje("Error no se encontro la pagina web con id:" + idPaginaWeb);
+        }
+
+//Buscar la pagina
+    }
+
     public String crearHtmlDePaginaWeb() {
         return "<HTML>\n"
                 + "<HEAD>\n"
