@@ -151,27 +151,23 @@ Id =  ( [_] | [-] | [$] )([:jletterdigit:] | [-] | [_] | [$] )+
 
 <YYINITIAL>     "["{Digitos}"]"     {return symbol(NUMERO,yytext());}
 
-<YYINITIAL> "["(({Id}"|")+) {Id}"]"  {System.out.println("ConjuntoDeEtiquetas:"+yytext());return symbol(CONJUNTO_DE_ETIQUETAS,yytext());}  
+<YYINITIAL> "["(({Id}"|")+) {Id}"]"  {return symbol(CONJUNTO_DE_ETIQUETAS,yytext());}  
 
 <YYINITIAL>     "["{Id}"]" {return symbol(IDENTIFICADOR,yytext());}   
 
 <YYINITIAL>     "\""{Id}"\"" {return symbol(IDENTIFICADOR_COMILLA,yytext());}
 
-<YYINITIAL> "[#"([a-fA-F]|[0-9]){6}"]"      {System.out.println("Codigo color:"+yytext());return symbol(CODIGO_COLOR,yytext());}  
+<YYINITIAL> "[#"([a-fA-F]|[0-9]){6}"]"      {return symbol(CODIGO_COLOR,yytext());}  
 
-//<YYINITIAL> "\""~"\""     {System.out.println("Oracion:"+yytext());return symbol(ORACION_ETIQUETA,yytext());}  
+//<YYINITIAL> "\""~"\""     {return symbol(ORACION_ETIQUETA,yytext());}  
 
-<YYINITIAL> "["https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*"]" {System.out.println("URL"+yytext());return symbol(URL,yytext());}
+<YYINITIAL> "["https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*"]" {return symbol(URL,yytext());}
 
-<YYINITIAL> "["~"]"     {System.out.println("Oracion:"+yytext());return symbol(ORACION,yytext());}  
+<YYINITIAL> "["~"]"     {return symbol(ORACION,yytext());}  
 
-//<YYINITIAL>  ~"|"     {System.out.println("ETIQUETA_MENU:"+yytext());return symbol(ETIQUETA_MENU,yytext());}
-
-//<YYINITIAL>  ~"]"     {System.out.println("ETIQUETA_MENU_FIN:"+yytext());return symbol(ETIQUETA_MENU_FIN,yytext());}  
-  
 
 {Espacio} 	{/*IGNORAMOS*/}
 
-[^]     {System.out.println("ERRORES LEXICOS:"+yytext());}
+[^]     {/*System.out.println("ERRORES LEXICOS:"+yytext());*/}
 
 

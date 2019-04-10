@@ -467,11 +467,10 @@ class CUP$parser$actions {
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
 		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
-		System.out.println("CABECERA ES DE TIPO:"+i);
+		
             Token accion= new Token(i.toString(),i.toString());
             ManejadorDeExpresiones.manejarExpresionSinEtiquetasNiAtributos(accion,listaDeTokens);
             listaDeTokens=new ArrayList<>();
-            System.out.println("ESTRUCTURA SIN ATRIBUTOS NI ETIQUETAS");
             
               CUP$parser$result = parser.getSymbolFactory().newSymbol("unaAccion",2, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -488,7 +487,6 @@ class CUP$parser$actions {
             ManejadorDeExpresiones.manejarExpresionConEtiquetas(accion,listaDeTokens,listaDeEtiquetas);
             listaDeTokens=new ArrayList<>();
             listaDeEtiquetas=new ArrayList<>();
-            System.out.println("ESTRUCTURA CON ETIQUETAS");
             
               CUP$parser$result = parser.getSymbolFactory().newSymbol("unaAccion",2, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -505,7 +503,6 @@ class CUP$parser$actions {
             ManejadorDeExpresiones.manejarExpresionConAtributos(accion,listaDeTokens,listaDeAtributos);
             listaDeTokens=new ArrayList<>();
             listaDeAtributos=new ArrayList<>();
-            System.out.println("ESTRUCTURA CON ATRIBUTOS");
             
               CUP$parser$result = parser.getSymbolFactory().newSymbol("unaAccion",2, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

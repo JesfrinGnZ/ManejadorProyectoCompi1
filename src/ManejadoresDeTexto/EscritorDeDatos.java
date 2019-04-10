@@ -56,7 +56,6 @@ public class EscritorDeDatos {
     }
     
     public static void borrarSitioWeb(String direccion) {
-        System.out.println("*********************-------------------***********"+direccion);
         File direccionDeUsuarios = new File(direccion);
         direccionDeUsuarios.deleteOnExit();
     }

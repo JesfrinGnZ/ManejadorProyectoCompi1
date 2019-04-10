@@ -1058,7 +1058,7 @@ public class AnalizadorLexicoTextoCliente implements java_cup.runtime.Scanner {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1: 
-            { System.out.println("ERRORES LEXICOS:"+yytext());
+            { /*System.out.println("ERRORES LEXICOS:"+yytext());*/
             } 
             // fall through
           case 58: break;
@@ -1098,7 +1098,7 @@ public class AnalizadorLexicoTextoCliente implements java_cup.runtime.Scanner {
             // fall through
           case 65: break;
           case 9: 
-            { System.out.println("Oracion:"+yytext());return symbol(ORACION,yytext());
+            { return symbol(ORACION,yytext());
             } 
             // fall through
           case 66: break;
@@ -1188,7 +1188,7 @@ public class AnalizadorLexicoTextoCliente implements java_cup.runtime.Scanner {
             // fall through
           case 83: break;
           case 27: 
-            { System.out.println("ConjuntoDeEtiquetas:"+yytext());return symbol(CONJUNTO_DE_ETIQUETAS,yytext());
+            { return symbol(CONJUNTO_DE_ETIQUETAS,yytext());
             } 
             // fall through
           case 84: break;
@@ -1248,7 +1248,7 @@ public class AnalizadorLexicoTextoCliente implements java_cup.runtime.Scanner {
             // fall through
           case 95: break;
           case 39: 
-            { System.out.println("Codigo color:"+yytext());return symbol(CODIGO_COLOR,yytext());
+            { return symbol(CODIGO_COLOR,yytext());
             } 
             // fall through
           case 96: break;
@@ -1283,7 +1283,7 @@ public class AnalizadorLexicoTextoCliente implements java_cup.runtime.Scanner {
             // fall through
           case 102: break;
           case 46: 
-            { System.out.println("URL"+yytext());return symbol(URL,yytext());
+            { return symbol(URL,yytext());
             } 
             // fall through
           case 103: break;

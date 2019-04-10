@@ -40,11 +40,11 @@ public class Servidor extends Observable implements Runnable {
     }
 
     private void iniciarServidor() throws IOException {
-        System.out.println("SERVIDOR INICIADO");
+        //System.out.println("SERVIDOR INICIADO");
         //Siempre estara escuchando peticiones 
         while (true) {
             this.sc = servidor.accept();
-            System.out.println("Cliente conectado");
+            //System.out.println("Cliente conectado");
             in = new DataInputStream(sc.getInputStream());//Para lectura de mensajes
             String mensaje = in.readUTF();
             //Informar de actualizacion
@@ -53,7 +53,7 @@ public class Servidor extends Observable implements Runnable {
             this.clearChanged();
             //Se cierra el flujo
             sc.close();
-            System.out.println("Cliente desconectado");
+            //System.out.println("Cliente desconectado");
         }
     }
 

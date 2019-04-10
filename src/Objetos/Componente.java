@@ -165,8 +165,6 @@ public class Componente {
                     break;
                 case "CLASE":
                     this.clase = valor;
-                    System.out.println("CLASEEEEEEEE:"+this.clase);
-                    System.out.println("");
                     if (componenteAModificar != null) {
                         if (!componenteAModificar.getClase().equals(this.clase)) {
                             ManejadorDeMensajes.agregarMensaje("ERROR la clase no coincide:" + this.clase + " con:" + componenteAModificar.getClase());

@@ -71,7 +71,6 @@ public class ManejadorDeVerificaciones {
     }*/
     public static boolean verificarSiExisteElUsuario(String idUsuario) {
         for (Usuario usuario : Run.listaDeUsuarios) {
-            System.out.println("--------------------->ID USUARIO:" + idUsuario + " NOMBRE:" + usuario.getNombre());
             if (usuario.getNombre().equals(idUsuario)) {
                 return true;
             }

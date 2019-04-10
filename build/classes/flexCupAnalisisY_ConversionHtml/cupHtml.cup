@@ -91,11 +91,10 @@ acciones::= MENOR_QUE ACCIONES MAYOR_QUE conjuntoDeAcciones MENOR_QUE DIAGONAL A
 conjuntoDeAcciones::= conjuntoDeAcciones unaAccion | unaAccion;
 
 unaAccion::=cabecera:i cuerpo fin
-            {:System.out.println("CABECERA ES DE TIPO:"+i);
+            {:
             Token accion= new Token(i.toString(),i.toString());
             ManejadorDeExpresiones.manejarExpresionSinEtiquetasNiAtributos(accion,listaDeTokens);
             listaDeTokens=new ArrayList<>();
-            System.out.println("ESTRUCTURA SIN ATRIBUTOS NI ETIQUETAS");
             :}|
 
             cabecera:i cuerpo etiquetas fin
@@ -103,7 +102,6 @@ unaAccion::=cabecera:i cuerpo fin
             ManejadorDeExpresiones.manejarExpresionConEtiquetas(accion,listaDeTokens,listaDeEtiquetas);
             listaDeTokens=new ArrayList<>();
             listaDeEtiquetas=new ArrayList<>();
-            System.out.println("ESTRUCTURA CON ETIQUETAS");
             :}|
             
             cabecera:i cuerpo atributos fin
@@ -111,7 +109,6 @@ unaAccion::=cabecera:i cuerpo fin
             ManejadorDeExpresiones.manejarExpresionConAtributos(accion,listaDeTokens,listaDeAtributos);
             listaDeTokens=new ArrayList<>();
             listaDeAtributos=new ArrayList<>();
-            System.out.println("ESTRUCTURA CON ATRIBUTOS");
             :}|
             error{:System.out.println("ERRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRR");listaDeTokens=new ArrayList<>();
             listaDeEtiquetas=new ArrayList<>();:};

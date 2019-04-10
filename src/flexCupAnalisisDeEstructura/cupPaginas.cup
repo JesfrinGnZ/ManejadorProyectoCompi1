@@ -293,7 +293,7 @@ fin::= MENOR_QUE DIAGONAL ELEMENTO MAYOR_QUE;
 
 //***************************************************Inicio*************************************
 
-inicioSitioWeb::=MENOR_QUE ELEMENTO NOMBRE IGUAL COMILLA SITIO_WEB COMILLA MAYOR_QUE{:System.out.println("SITIO WEB");:};
+inicioSitioWeb::=MENOR_QUE ELEMENTO NOMBRE IGUAL COMILLA SITIO_WEB COMILLA MAYOR_QUE;
 
 inicioPaginaWeb::=MENOR_QUE ELEMENTO NOMBRE IGUAL COMILLA PAGINA_WEB COMILLA MAYOR_QUE;
 

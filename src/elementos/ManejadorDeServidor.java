@@ -35,8 +35,6 @@ public class ManejadorDeServidor implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         String mensaje = (String) arg;
-        System.out.println("DESDE SERVIDOR-------------------------------------------------------------------");
-        System.out.println(mensaje);//Se recibe el mensaje de la app cliente
         //Se analiza el mensaje de la app cliente
         AnalizadorLexicoTextoCliente lex = new AnalizadorLexicoTextoCliente(new BufferedReader(new StringReader(mensaje)));
         analizadoresConvertidoresHtml.parser sintactico = new analizadoresConvertidoresHtml.parser(lex);
@@ -46,7 +44,6 @@ public class ManejadorDeServidor implements Observer {
             Logger.getLogger(ManejadorDeServidor.class.getName()).log(Level.SEVERE, null, ex);
         }
         //Se manda las acciones que se completaron o las acciones que no se pudieron cumplir
-        System.out.println("///////////////////////");
         Cliente c = new Cliente(9000,ManejadorDeMensajes.mensajeParaCliente);
         Thread t = new Thread(c);
         t.start();

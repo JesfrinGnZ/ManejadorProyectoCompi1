@@ -184,9 +184,6 @@ public class ManejadorDeMensajes {
             buscarPaginasHijas(sitioWeb.getId());
             textoBaseDeDatos += "</paginasSitioWeb>\n";
             textoBaseDeDatos += "</sitioWeb>";
-            System.out.println(",.,.,.,.,<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-            System.out.println(textoBaseDeDatos);
-            System.out.println(",.,.,.,.,<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
         }
 
