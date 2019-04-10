@@ -39,8 +39,7 @@ public class Run {
 
         //ManejadorDeMensajes.escribirSitioWeb();
         //Creando servidor para recibir texto 
-
-        ManejadorDeServidor  nuevoServidor = new ManejadorDeServidor();
+        ManejadorDeServidor nuevoServidor = new ManejadorDeServidor();
         nuevoServidor.iniciarServidor(6000);//Conexion para RECIBIR TEXTO
         if (listaDeSitiosWeb.isEmpty()) {
             System.out.println("ES VACIA LA LISTA");
@@ -61,6 +60,9 @@ public class Run {
             System.out.println("Paginaweb:" + paginaWeb.getId());
             for (Componente comp : paginaWeb.getListaDeComponentes()) {
                 System.out.println("Componente:" + comp.getId());
+                System.out.println("Componente calse:" + comp.getClase());
+                System.out.println("Componente alineacion:" + comp.getAlineacion());
+
             }
             for (Etiqueta etiqueta : paginaWeb.getListaDeEtiquetas()) {
                 System.out.println("Etiqueta:" + etiqueta.getEtiqueta());

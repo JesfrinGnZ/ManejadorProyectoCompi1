@@ -21,15 +21,28 @@ public class Componente {
     public Componente() {
     }
 
+    public Componente(String id, String clase, String texto, String alineacion, String color, String origen, String altura, String ancho, String padre, String etiquetas) {
+        this.id = id;
+        this.clase = clase;
+        this.texto = texto;
+        this.alineacion = alineacion;
+        this.color = color;
+        this.origen = origen;
+        this.altura = altura;
+        this.ancho = ancho;
+        this.padre = padre;
+        this.etiquetas = etiquetas;
+    }
+
     public void darValoresCreacion(ArrayList<Token> listaDeTokens, ArrayList<Token> listaDeAtributos) {
         int contador = 0;
         PaginaWeb paginaWeb = null;
         for (Token token : listaDeTokens) {
-            String valor = token.getLexema();
+            String valor = token.getLexema().substring(1, token.getLexema().length() - 1);
             switch (token.getTipo()) {
                 case "ID":
-                    ManejadorDeMensajes.agregarMensaje("-------------COMPONENTE ID:" + this.id + "----------------");
                     this.id = valor;
+                    ManejadorDeMensajes.agregarMensaje("-------------CREACION COMPONENTE ID:" + this.id + "----------------");
                     break;
                 case "PAGINA":
                     this.pagina = valor;
@@ -61,37 +74,37 @@ public class Componente {
             }
         }
 
-        for (Token atributo : listaDeAtributos) {
-            String valor = atributo.getLexema();
-            switch (atributo.getTipo()) {
-                case "texto":
-                    this.texto = valor;
-                    break;
-                case "alineacion":
-                    this.alineacion = valor;
-                    break;
-                case "color":
-                    this.color = valor;
-                    break;
-                case "origen":
-                    this.origen = valor;
-                    break;
-                case "altura":
-                    this.altura = valor;
-                    break;
-                case "ancho":
-                    this.ancho = valor;
-                    break;
-                case "padre":
-                    this.padre = valor;
-                    break;
-                case "etiquetas":
-                    this.etiquetas = valor;
-                    break;
-            }
-        }
-
         if (contador == 0) {
+            for (Token atributo : listaDeAtributos) {
+                String valor = atributo.getLexema();
+                switch (atributo.getTipo()) {
+                    case "texto":
+                        this.texto = valor;
+                        break;
+                    case "alineacion":
+                        this.alineacion = valor;
+                        break;
+                    case "color":
+                        this.color = valor;
+                        break;
+                    case "origen":
+                        this.origen = valor;
+                        break;
+                    case "altura":
+                        this.altura = valor;
+                        break;
+                    case "ancho":
+                        this.ancho = valor;
+                        break;
+                    case "padre":
+                        this.padre = valor;
+                        break;
+                    case "etiquetas":
+                        this.etiquetas = valor;
+                        break;
+                }
+            }
+
             //Se anade de una el compoennte a la pagina
             if (paginaWeb.getListaDeComponentes() == null) {
                 ArrayList<Componente> listaComponente = new ArrayList<>();
@@ -108,6 +121,7 @@ public class Componente {
             EscritorDeDatos.reescribirBaseDeDatos(ManejadorDeMensajes.escribirSitiosWeb(), "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
             ManejadorDeMensajes.textoBaseDeDatos = "";
         }
+
     }
 
     public void darValoresModificacion(ArrayList<Token> listaDeTokens, ArrayList<Token> listaDeAtributos) {
@@ -115,11 +129,11 @@ public class Componente {
         PaginaWeb paginaWeb = null;
         Componente componenteAModificar = null;
         for (Token token : listaDeTokens) {
-            String valor = token.getLexema();
+            String valor = token.getLexema().substring(1, token.getLexema().length() - 1);
             switch (token.getTipo()) {
                 case "ID":
-                    ManejadorDeMensajes.agregarMensaje("-------------COMPONENTE ID:" + this.id + "----------------");
                     this.id = valor;
+                    ManejadorDeMensajes.agregarMensaje("-------------MODIFICAR COMPONENTE ID:" + this.id + "----------------");
                     break;
                 case "PAGINA":
                     this.pagina = valor;
@@ -148,58 +162,70 @@ public class Componente {
                         ManejadorDeMensajes.agregarMensaje("ERROR la PAGINA_WEB con id:" + this.pagina + " no existe.");
                         contador++;
                     }
-
+                    break;
                 case "CLASE":
                     this.clase = valor;
-                    break;
-            }
-        }
-
-        for (Token atributo : listaDeAtributos) {
-            String valor = atributo.getLexema();
-            switch (atributo.getTipo()) {
-                case "texto":
-                    this.texto = valor;
-                    break;
-                case "alineacion":
-                    this.alineacion = valor;
-                    break;
-                case "color":
-                    this.color = valor;
-                    break;
-                case "origen":
-                    this.origen = valor;
-                    break;
-                case "altura":
-                    this.altura = valor;
-                    break;
-                case "ancho":
-                    this.ancho = valor;
-                    break;
-                case "padre":
-                    this.padre = valor;
-                    break;
-                case "etiquetas":
-                    this.etiquetas = valor;
+                    System.out.println("CLASEEEEEEEE:"+this.clase);
+                    System.out.println("");
+                    if (componenteAModificar != null) {
+                        if (!componenteAModificar.getClase().equals(this.clase)) {
+                            ManejadorDeMensajes.agregarMensaje("ERROR la clase no coincide:" + this.clase + " con:" + componenteAModificar.getClase());
+                            contador++;
+                        }
+                    }
                     break;
             }
         }
 
         if (contador == 0) {
-            //Se anade de una el compoennte a la pagina
-            for (Componente comp : paginaWeb.getListaDeComponentes()) {
-                if(comp.getId().equals(this.id)){
-                    comp=this;//Comp ahora toma el valor del componente que ingreso
+            for (Token atributo : listaDeAtributos) {
+                String valor = atributo.getLexema();
+                switch (atributo.getTipo()) {
+                    case "texto":
+                        this.texto = valor;
+                        break;
+                    case "alineacion":
+                        this.alineacion = valor;
+                        break;
+                    case "color":
+                        this.color = valor;
+                        break;
+                    case "origen":
+                        this.origen = valor;
+                        break;
+                    case "altura":
+                        this.altura = valor;
+                        break;
+                    case "ancho":
+                        this.ancho = valor;
+                        break;
+                    case "padre":
+                        this.padre = valor;
+                        break;
+                    case "etiquetas":
+                        this.etiquetas = valor;
+                        break;
                 }
             }
+
+            //Se anade de una el compoennte a la pagina
+            int posicionEnLista = 0;
+            for (Componente comp : paginaWeb.getListaDeComponentes()) {
+                if (comp.getId().equals(this.id)) {
+                    break;
+                }
+                posicionEnLista++;
+            }
+            paginaWeb.getListaDeComponentes().set(posicionEnLista, this);
             //Se reescribe el html de la pagina
             String html = armarHtmlParaPagina(paginaWeb);
             EscritorDeDatos.escribirHtml(html, paginaWeb.getDireccion());
-            ManejadorDeMensajes.agregarMensaje("Se ha creado el componente:" + this.id);
+            ManejadorDeMensajes.agregarMensaje("Se ha modificado el componente:" + this.id);
             //Se escriben los datos de la base de nuevo
             EscritorDeDatos.reescribirBaseDeDatos(ManejadorDeMensajes.escribirSitiosWeb(), "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
             ManejadorDeMensajes.textoBaseDeDatos = "";
         }
+
     }
 
     public static void borrarComponente(ArrayList<Token> listaDeTokens) {
@@ -267,16 +293,15 @@ public class Componente {
                         + "    </" + devolverAlineacion() + ">";
                 break;
             case "VIDEO":
-                textoHtml = "    <" + devolverAlineacion() + ">    \n"
-                        + "    <video src=\"" + this.origen + "\" width=\"" + this.ancho + "\" height=\"" + this.altura + "\" controls autoplay preload></video>\n"
-                        + "    </" + devolverAlineacion() + ">";
+                textoHtml = "<video src=\"" + this.origen + "\" width=\"" + this.ancho + "\" height=\"" + this.altura + "\" controls autoplay preload></video>\n";
+
                 break;
             case "MENU":
                 System.out.println("ES MENU LOL");
                 break;
 
         }
-        return texto;
+        return textoHtml;
     }
 
     public String devolverAlineacion() {
@@ -322,7 +347,7 @@ public class Componente {
     }
 
     public void setAlineacion(String alineacion) {
-        this.alineacion = alineacion.substring(0, alineacion.length() - 1);
+        this.alineacion = alineacion.substring(1, alineacion.length() - 1);
     }
 
     public String getColor() {

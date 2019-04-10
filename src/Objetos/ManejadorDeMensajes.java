@@ -88,62 +88,64 @@ public class ManejadorDeMensajes {
 
     private static String escribirComponentes(PaginaWeb paginaWeb) {
         String textoDeComponentes = "";
-        if (paginaWeb.getListaDeComponentes() != null) {
+        if (paginaWeb.getListaDeComponentes() != null && !paginaWeb.getListaDeComponentes().isEmpty()) {
+            textoDeComponentes += "<componentes>\n";
             for (Componente componente : paginaWeb.getListaDeComponentes()) {
-                textoDeComponentes += " <componentes>\n"
-                        + "                <componente nombre = \"" + componente.getClase() + "\">\n"
+                textoDeComponentes += "                <componente nombre = \"" + componente.getClase() + "\">\n"
                         + "                    <atributos>\n"
                         + "                        <atributo nombre =\"ID\">\n"
                         + "                            [" + componente.getId() + "]\n"
-                        + "                         </atributo>                  ";
+                        + "                         </atributo>\n";
 
                 if (componente.getTexto() != null) {
                     textoDeComponentes += "                        <atributo nombre =\"TEXTO\">\n"
                             + "                            [" + componente.getTexto() + "]\n"
-                            + "                        </atributo>";
+                            + "                        </atributo>\n";
                 }
                 if (componente.getAlineacion() != null) {
                     textoDeComponentes += "                        <atributo nombre =\"ALINEACION\">\n"
                             + "                            [" + componente.getAlineacion() + "]\n"
-                            + "                        </atributo>";
+                            + "                        </atributo>\n";
                 }
                 if (componente.getColor() != null) {
                     textoDeComponentes += "                        <atributo nombre =\"COLOR\">\n"
                             + "                            [" + componente.getColor() + "]\n"
-                            + "                        </atributo>";
+                            + "                        </atributo>\n";
                 }
 
                 if (componente.getOrigen() != null) {
                     textoDeComponentes += "                        <atributo nombre =\"ORIGEN\">\n"
                             + "                            [" + componente.getOrigen() + "]\n"
-                            + "                        </atributo>";
+                            + "                        </atributo>\n";
                 }
 
                 if (componente.getAltura() != null) {
                     textoDeComponentes += "                        <atributo nombre =\"ALTURA\">\n"
                             + "                            [" + componente.getAltura() + "]\n"
-                            + "                        </atributo>";
+                            + "                        </atributo>\n";
                 }
 
                 if (componente.getAncho() != null) {
                     textoDeComponentes += "                        <atributo nombre =\"ANCHO\">\n"
                             + "                            [" + componente.getAncho() + "]\n"
-                            + "                        </atributo>";
+                            + "                        </atributo>\n";
                 }
 
                 if (componente.getPadre() != null) {
                     textoDeComponentes += "                        <atributo nombre =\"PADRE\">\n"
                             + "                            [" + componente.getPadre() + "]\n"
-                            + "                        </atributo>";
+                            + "                        </atributo>\n";
                 }
 
                 if (componente.getEtiquetas() != null) {
                     textoDeComponentes += "                        <atributo nombre =\"ETIQUETAS\">\n"
                             + "                            [" + componente.getEtiquetas() + "]\n"
-                            + "                        </atributo>";
+                            + "                        </atributo>\n";
                 }
-
+                textoDeComponentes += "                    </atributos>\n";
+                textoDeComponentes += "</componente>\n";
             }
+            textoDeComponentes += "</componentes>\n";
         }
 
         return textoDeComponentes;
@@ -151,10 +153,12 @@ public class ManejadorDeMensajes {
 
     private static String escribirEtiquetas(PaginaWeb paginaWeb) {
         String etiquetas = "";
-        if (paginaWeb.getListaDeEtiquetas() != null) {
+        if (paginaWeb.getListaDeEtiquetas() != null && !paginaWeb.getListaDeEtiquetas().isEmpty()) {
+            etiquetas += "\t<etiquetas>\n";
             for (Etiqueta etiqueta : paginaWeb.getListaDeEtiquetas()) {
-                etiquetas += "<etiqueta nombre =[" + etiqueta.getEtiqueta() + "]/>\n";
+                etiquetas += "\t\t<etiqueta nombre =[" + etiqueta.getEtiqueta() + "]/>\n";
             }
+            etiquetas += "\t</etiquetas>\n";
         }
         return etiquetas;
     }

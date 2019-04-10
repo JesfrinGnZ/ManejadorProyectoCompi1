@@ -37,7 +37,7 @@ public class PaginaWeb {
         this.usuarioModificacion = usuarioModificacion;
     }
 
-    public void darValoresCreacionYModificacion(ArrayList<Token> listaDeTokens, ArrayList<Token> etiquetas) {
+    public void darValoresCreacion(ArrayList<Token> listaDeTokens, ArrayList<Token> etiquetas) {
         int contador = 0;
         for (Token token : listaDeTokens) {
             String valor = token.getLexema().substring(1, token.getLexema().length() - 1);
@@ -87,11 +87,9 @@ public class PaginaWeb {
 
         if (contador == 0) {
             if (etiquetas != null) {//Se deben agregar etiquetas
-                ArrayList<Etiqueta> primerasEtiquetas = new ArrayList<>();
                 for (Token etiqueta : etiquetas) {
                     listaDeEtiquetas.add(new Etiqueta(etiqueta.getLexema()));
                 }
-                this.listaDeEtiquetas = primerasEtiquetas;
             }
 
             ManejadorDeMensajes.agregarMensaje("La pagina web con id:" + this.id + " se ha CREADO EXITOSAMENTE");
@@ -134,7 +132,7 @@ public class PaginaWeb {
     }
 
     public static void modificarPagina(ArrayList<Token> listaDeTokens, ArrayList<Token> listaDeEtiquetas) {
-        String idPaginaWeb = listaDeTokens.get(0).getLexema();
+        String idPaginaWeb = listaDeTokens.get(0).getLexema().substring(1, listaDeTokens.get(0).getLexema().length() - 1);
         ManejadorDeMensajes.agregarMensaje("-------------MODIFICACION PAGINA WEB ID:" + idPaginaWeb + "----------------");
         PaginaWeb paginaWebAModificar = null;
         for (PaginaWeb paginaWeb : Run.listaDePaginasWeb) {//Se busca la pagina web que se quiere modificar
@@ -154,6 +152,10 @@ public class PaginaWeb {
                 //Se modifica la lista de etiquetas
                 paginaWebAModificar.setListaDeEtiquetas(nuevaListaDeEtiquetas);
             }
+            //Escribir html
+            String html = paginaWebAModificar.crearHtmlDePaginaWeb();
+            EscritorDeDatos.escribirHtml(html, "/home/jesfrin/Documentos/DocumentosHtml/" + paginaWebAModificar.getId() + ".html");
+            //Mensaje y reescribir base de datos
             ManejadorDeMensajes.agregarMensaje("Se ha modificado la pagina web:" + idPaginaWeb);
             EscritorDeDatos.reescribirBaseDeDatos(ManejadorDeMensajes.escribirSitiosWeb(), "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
             ManejadorDeMensajes.textoBaseDeDatos = "";

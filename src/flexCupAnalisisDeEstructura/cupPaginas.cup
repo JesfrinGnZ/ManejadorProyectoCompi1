@@ -188,24 +188,23 @@ conjuntoDeAtributos::= MENOR_QUE ATRIBUTOS  MAYOR_QUE atributosDeComponente MENO
 atributosDeComponente::= atributosDeComponente unAtributo | unAtributo;
 
 unAtributo::= MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA TEXTO:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:if(componente==null) componente=new Componente();componente.setTexto(t);:}|
+              {:componente.setTexto(t);:}|
               MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA ID:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:if(componente==null) componente=new Componente();componente.setId(t);:}|
+              {:componente=new Componente();componente.setId(t);paginaWeb.getListaDeComponentes().add(componente);:}|
               MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA ALINEACION:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:if(componente==null) componente=new Componente();componente.setAlineacion(t);:}|
+              {:componente.setAlineacion(t);:}|
               MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA COLOR:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:if(componente==null) componente=new Componente();componente.setColor(t);:}|
+              {:componente.setColor(t);:}|
               MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA ORIGEN:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:if(componente==null) componente=new Componente();componente.setOrigen(t);:}|
+              {:componente.setOrigen(t);:}|
               MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA ALTURA:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:if(componente==null) componente=new Componente();componente.setAltura(t);:}|
+              {:componente.setAltura(t);:}|
               MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA ANCHO:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:if(componente==null) componente=new Componente();componente.setAncho(t);:}|
+              {:componente.setAncho(t);:}|
               MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA PADRE:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:if(componente==null) componente=new Componente();componente.setPadre(t);:}|
+              {:componente.setPadre(t);:}|
               MENOR_QUE ATRIBUTO NOMBRE IGUAL COMILLA ETIQUETAS_MENU:i COMILLA MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:if(componente==null) componente=new Componente();componente.setEtiquetas(t);
-                paginaWeb.getListaDeComponentes().add(componente);  
+              {:componente.setEtiquetas(t);
               :};
 
 

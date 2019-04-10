@@ -190,28 +190,28 @@ atributos::= MENOR_QUE ATRIBUTOS MAYOR_QUE conjuntoDeAtributos MENOR_QUE DIAGONA
 conjuntoDeAtributos::= conjuntoDeAtributos unAtributo | unAtributo;
 
 unAtributo::= MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA TEXTO COMILLA  MAYOR_QUE ORACION:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:listaDeAtributos.add(new Token("texto",t.substring(0,t.length()-1)));:}|
+              {:listaDeAtributos.add(new Token("texto",t.substring(1,t.length()-1)));:}|
               
               MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA ALINEACION  COMILLA MAYOR_QUE tipoDeAlineacion:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:listaDeAtributos.add(new Token("alineacion",t.toString().substring(0,t.toString().length()-1)));:}|
+              {:listaDeAtributos.add(new Token("alineacion",t.toString().substring(1,t.toString().length()-1)));:}|
               
               MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA COLOR  COMILLA MAYOR_QUE CODIGO_COLOR:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:listaDeAtributos.add(new Token("color",t.substring(0,t.length()-1)));:}|
+              {:listaDeAtributos.add(new Token("color",t.substring(1,t.length()-1)));:}|
 
               MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA ORIGEN  COMILLA MAYOR_QUE URL:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:listaDeAtributos.add(new Token("origen",t.substring(0,t.length()-1)));:}|
+              {:listaDeAtributos.add(new Token("origen",t.substring(1,t.length()-1)));:}|
 
               MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA ALTURA  COMILLA MAYOR_QUE NUMERO:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:listaDeAtributos.add(new Token("altura",t.substring(0,t.length()-1)));:}|
+              {:listaDeAtributos.add(new Token("altura",t.substring(1,t.length()-1)));:}|
 
               MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA ANCHO  COMILLA MAYOR_QUE NUMERO:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:listaDeAtributos.add(new Token("ancho",t.substring(0,t.length()-1)));:}|
+              {:listaDeAtributos.add(new Token("ancho",t.substring(1,t.length()-1)));:}|
 
               MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA PADRE  COMILLA MAYOR_QUE IDENTIFICADOR:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:listaDeAtributos.add(new Token("padre",t.substring(0,t.length()-1)));:}|
+              {:listaDeAtributos.add(new Token("padre",t.substring(1,t.length()-1)));:}|
 
               MENOR_QUE ATRIBUTO  NOMBRE IGUAL  COMILLA ETIQUETAS  COMILLA MAYOR_QUE etiquetasMenu:t MENOR_QUE DIAGONAL ATRIBUTO MAYOR_QUE
-              {:listaDeAtributos.add(new Token("etiquetas",t.toString().substring(0,t.toString().length()-1)));:}|
+              {:listaDeAtributos.add(new Token("etiquetas",t.toString().substring(1,t.toString().length()-1)));:}|
 
               error {:listaDeTokens=new ArrayList<>();
             listaDeEtiquetas=new ArrayList<>();:};
