@@ -5,42 +5,63 @@
  */
 package Objetos;
 
+import ManejadoresDeTexto.EscritorDeDatos;
 import elementos.Run;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  *
  * @author jesfrin
  */
 public class ManejadorDeEliminaciones {
-    
-    public static void eliminarPaginasEHijas(PaginaWeb pagina){
+
+    public static void eliminarPaginasEHijas(PaginaWeb pagina) {
         File archivoDePagina;
         //Borrando todas las paginas hijas
+        ArrayList<PaginaWeb> paginasAEliminar = new ArrayList<>();
         for (PaginaWeb paginaWeb : Run.listaDePaginasWeb) {
-            if(paginaWeb.getPadre().equals(pagina.getId())){
+            if (paginaWeb.getPadre().equals(pagina.getId())) {
                 archivoDePagina = new File(paginaWeb.getDireccion());
-                archivoDePagina.delete();//Borrando archivo
-                Run.listaDePaginasWeb.remove(paginaWeb);//Borrando de lista
+                if (archivoDePagina.exists()) {
+                    archivoDePagina.delete();//Borrando archivo
+                }
+                paginasAEliminar.add(paginaWeb);
+            }
+        }
+        if (!paginasAEliminar.isEmpty()) {
+            for (PaginaWeb pag : paginasAEliminar) {
+                Run.listaDePaginasWeb.remove(pag);
             }
         }
         //Borrando a la pagina
         archivoDePagina = new File(pagina.getDireccion());
         archivoDePagina.delete();
-        Run.listaDePaginasWeb.remove(pagina);//Eliminando pagina principal
+        //Eliminando pagina principal
+        Run.listaDePaginasWeb.remove(pagina);
     }
-    
-    public static void eliminarSitioYPaginas(SitioWeb sitioWeb){
+
+    public static void eliminarSitioYPaginas(SitioWeb sitioWeb) {
         File archivoDePagina;
         //Borrando todas las paginas del sitio web
+        ArrayList<PaginaWeb> paginasAEliminar = new ArrayList<>();
         for (PaginaWeb paginaWeb : Run.listaDePaginasWeb) {
-            if(paginaWeb.getSitio().equals(sitioWeb.getId())){
+            if (paginaWeb.getSitio().equals(sitioWeb.getId())) {
                 archivoDePagina = new File(paginaWeb.getDireccion());
-                archivoDePagina.delete();
+                if (archivoDePagina.exists()) {
+                    archivoDePagina.delete();
+                }
+                paginasAEliminar.add(paginaWeb);
+            }
+        }
+        if(!paginasAEliminar.isEmpty()){
+            for (PaginaWeb paginaWeb : paginasAEliminar) {
                 Run.listaDePaginasWeb.remove(paginaWeb);
             }
         }
+       File archivo = new File(sitioWeb.getDireccion());
+       archivo.delete();
         Run.listaDeSitiosWeb.remove(sitioWeb);//Borrando sitio web
     }
-    
+
 }

@@ -91,15 +91,22 @@ public class PaginaWeb {
                     listaDeEtiquetas.add(new Etiqueta(etiqueta.getLexema()));
                 }
             }
+            SitioWeb sitioWeb=null;
+            for (SitioWeb s : Run.listaDeSitiosWeb) {
+                if(s.getId().equals(this.sitio)){
+                    sitioWeb=s;
+                    break;
+                }
+            }
 
             ManejadorDeMensajes.agregarMensaje("La pagina web con id:" + this.id + " se ha CREADO EXITOSAMENTE");
             //Se agrega els itio web a la lista
             Run.listaDePaginasWeb.add(this);//Le mandamos la pagina web que estamos creando y analizando
             //Se agrega la direccion de la pagina
-            this.direccion = "/home/jesfrin/Documentos/DocumentosHtml/" + this.id + ".html";
+            this.direccion = sitioWeb.getDireccion()+"/" + this.id + ".html";
             //Crear el html de la pagina web
             String html = this.crearHtmlDePaginaWeb();
-            EscritorDeDatos.escribirHtml(html, "/home/jesfrin/Documentos/DocumentosHtml/" + this.id + ".html");
+            EscritorDeDatos.escribirHtml(html, this.direccion);
             ManejadorDeMensajes.escribirSitiosWeb();
             EscritorDeDatos.reescribirBaseDeDatos(ManejadorDeMensajes.textoBaseDeDatos, "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
             ManejadorDeMensajes.textoBaseDeDatos = "";
@@ -110,12 +117,13 @@ public class PaginaWeb {
     }
 
     public static void borrarPaginaWeb(ArrayList<Token> listaDeTokens) {
-        String idDePagina = listaDeTokens.get(0).getLexema();
+        String idDePagina = listaDeTokens.get(0).getLexema().substring(1,listaDeTokens.get(0).getLexema().length()-1);
         PaginaWeb paginaWebAEliminar = null;
         ManejadorDeMensajes.agregarMensaje("-------------ELIMINACION PAGINA WEB ID:" + idDePagina + "----------------");
         for (PaginaWeb paginWeb : Run.listaDePaginasWeb) {//Buscar la pagina a eliminar
             if (paginWeb.getId().equals(idDePagina)) {
                 paginaWebAEliminar = paginWeb;
+                break;
             }
         }
         if (paginaWebAEliminar == null) {

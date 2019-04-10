@@ -199,7 +199,7 @@ public class Componente {
                     case "ancho":
                         this.ancho = valor;
                         break;
-                    case "padre":
+                    case "padre"://Validar que exista la pagina padre
                         this.padre = valor;
                         break;
                     case "etiquetas":
@@ -229,8 +229,8 @@ public class Componente {
     }
 
     public static void borrarComponente(ArrayList<Token> listaDeTokens) {
-        String idComponente = listaDeTokens.get(0).getLexema();
-        String idPagina = listaDeTokens.get(1).getLexema();
+        String idComponente = listaDeTokens.get(0).getLexema().substring(1,listaDeTokens.get(0).getLexema().length()-1);
+        String idPagina = listaDeTokens.get(1).getLexema().substring(1,listaDeTokens.get(1).getLexema().length()-1);
         ManejadorDeMensajes.agregarMensaje("-------------ELIMINAR COMPONENTE ID:" + idComponente + "----------------");
         PaginaWeb paginaWeb = null;
         Componente componente = null;
@@ -242,7 +242,7 @@ public class Componente {
         }
         if (paginaWeb != null) {//Se busca el componente ya con la pagina
             for (Componente comp : paginaWeb.getListaDeComponentes()) {
-                if (comp.getId().equals(idPagina)) {
+                if (comp.getId().equals(idComponente)) {
                     componente = comp;
                     break;
                 }
@@ -297,7 +297,34 @@ public class Componente {
 
                 break;
             case "MENU":
-                System.out.println("ES MENU LOL");
+                /*if(this.padre!=null && this.etiquetas!=null){
+                    //Padre es identificador de una pagina
+                    //Se deben buscar las hijas de esta pagina
+                    //Luego se escoge entre sus hijas las que tengan las etiquetas especificadas en etiquetas
+                    PaginaWeb pagina=null;
+                    for (PaginaWeb paginaWeb : Run.listaDePaginasWeb) {
+                        if(paginaWeb.getId().equals(this.padre)){
+                            pagina=paginaWeb;
+                        }
+                    }
+                     ArrayList<PaginaWeb> hijasDePagina = new ArrayList<>();
+                     for (PaginaWeb paginaWeb : Run.listaDePaginasWeb) {
+                        if(paginaWeb.getPadre().equals(pagina.getId())){
+                            hijasDePagina.add(paginaWeb);
+                        }
+                    }
+                     if(!hijasDePagina.isEmpty()){
+                         
+                     }
+                     
+                    
+                }else if(this.padre!=null){
+                    //Padre es identificador de una pagina
+                    //Se buscan las hijas de esta pagina
+                    //Se crea el menu con las pagins hijas
+                }else{//En teoria solo viene con etiquetas
+                    //Se crea el menu con las paginas que contengan las etiquetas 
+                }*/
                 break;
 
         }

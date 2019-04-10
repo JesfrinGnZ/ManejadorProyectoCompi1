@@ -55,7 +55,7 @@ public class ManejadorDeVerificaciones {
             }
         }
         
-        ManejadorDeMensajes.agregarMensaje("ERROR la PAGINA_WEB con id:" + padreDePagina + " no existe.");
+        ManejadorDeMensajes.agregarMensaje("ERROR la PAGINA_WEB(o sitio si no especifico) con id:" + padreDePagina + " no existe.");
         return false;
     }
 

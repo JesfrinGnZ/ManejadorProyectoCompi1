@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class SitioWeb {
 
-    private String id, usuarioCreacion, fechaCreacion, fechaModificacion, usuarioModificacion;
+    private String id, direccion, usuarioCreacion, fechaCreacion, fechaModificacion, usuarioModificacion;
 
     public SitioWeb() {
     }
@@ -56,13 +56,16 @@ public class SitioWeb {
             ManejadorDeMensajes.agregarMensaje("El sitio web con id:" + this.id + " se ha CREADO EXITOSAMENTE");
             //Se agrega els itio web a la lista
             Run.listaDeSitiosWeb.add(this);//Le mandamos el sitio web que estamos creando y analizando
+            this.direccion="/var/www/html/"+this.id;
+            //Crear la carpeta del sitio web
+            EscritorDeDatos.crearCarpetaParaSitioWeb(this.direccion);
             //Se escribe el sitio web y index
-            PaginaWeb index1 = new PaginaWeb("index" + this.id, "/home/jesfrin/Documentos/DocumentosHtml/index" + this.id + ".html", "index" + this.id, this.id, this.id, this.usuarioCreacion, this.fechaCreacion, this.fechaModificacion, this.usuarioModificacion);
+            PaginaWeb index1 = new PaginaWeb("index" + this.id, this.direccion+"/" +"index"+ this.id + ".html", "index" + this.id, this.id, this.id, this.usuarioCreacion, this.fechaCreacion, this.fechaModificacion, this.usuarioModificacion);
             //Se agrega la pagina a la lista
             Run.listaDePaginasWeb.add(index1);
             //Crear el html de la pagina web
             String html = index1.crearHtmlDePaginaWeb();
-            EscritorDeDatos.escribirHtml(html, "/home/jesfrin/Documentos/DocumentosHtml/index" + this.id + ".html");
+            EscritorDeDatos.escribirHtml(html, index1.getDireccion());
             //Se escribio la pagina html
             EscritorDeDatos.agregarDatosABaseDeDatos(escribirSitioWeb(this, index1), "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
 
@@ -70,7 +73,7 @@ public class SitioWeb {
     }
 
     public static void borrarSitioWeb(ArrayList<Token> listaDeTokens) {
-        String idDeSitioWeb = listaDeTokens.get(0).getLexema();
+        String idDeSitioWeb = listaDeTokens.get(0).getLexema().substring(1,listaDeTokens.get(0).getLexema().length()-1);
         SitioWeb sitioWebAEliminar = null;
         ManejadorDeMensajes.agregarMensaje("-------------ELIMINACION SITIO WEB ID:" + idDeSitioWeb + "----------------");
         for (SitioWeb sitioWeb : Run.listaDeSitiosWeb) {
@@ -82,6 +85,7 @@ public class SitioWeb {
             //Mandar mensaje de que no se encontro el sitio web con el Id buscado
             ManejadorDeMensajes.agregarMensaje("Error no se encontro el sitio web con id:" + idDeSitioWeb);
         } else {
+            //EscritorDeDatos.borrarSitioWeb(sitioWebAEliminar.getDireccion());
             ManejadorDeEliminaciones.eliminarSitioYPaginas(sitioWebAEliminar);
             //Reescribir el archivo
             EscritorDeDatos.reescribirBaseDeDatos(ManejadorDeMensajes.escribirSitiosWeb(), "/home/jesfrin/Documentos/ArchivosP1Compi1/paginas.txt");
@@ -101,6 +105,14 @@ public class SitioWeb {
 
     public void setId(String id) {
         this.id = id.substring(1, id.length() - 1);
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion.substring(1, direccion.length() - 1);
     }
 
     public String getUsuarioCreacion() {
@@ -140,6 +152,9 @@ public class SitioWeb {
                 + "\t<parametrosSitioWeb>\n"
                 + "\t\t<parametroSitioWeb nombre = \"ID\">\n"
                 + "\t\t\t[" + sitioWeb.getId() + "]" + " \n"
+                + "\t\t</parametroSitioWeb>\n"
+                + " \t\t<parametroSitioWeb nombre = \"DIRECCION\">\n"
+                + "\t\t\t ["+sitioWeb.getDireccion()+"]"+"\n"
                 + "\t\t</parametroSitioWeb>\n"
                 + "\t\t<parametroSitioWeb nombre = \"USUARIO_CREACION\">\n"
                 + "\t\t\t[" + sitioWeb.getUsuarioCreacion() + "]" + " \n"
